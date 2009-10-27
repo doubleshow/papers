@@ -1,0 +1,290 @@
+\section{Introduction}
+
+A: Getting help is important. Going to web for help. Web has many
+resources, such as online forums, tutorials, official guides,
+books. Content of reference books are also available online.
+
+B: However, current methods for searching this resource has many
+limitations. Because
+* Need to type many keywords. Most cases copy and paste is not supported.
+* Ambiguity: how to do X with Y? But keywords are all the same.
+* Hard to judge the relevancy.
+* Sometimes in a long document with multiple steps, it's unclear
+where in the document is relevant to the current screen.
+* can not search cross langauge (bi-lingual who may be familiar
+with the terms in one language but can read the explanation in two
+languages equally well)
+
+C: Use multi-modal search
+    Brief system demo
+        walk through a search scenario
+        showoff the scale
+    Explain how each limitation is overcome
+    List of contributions
+        Propose a new large-scale search system
+        Evaluate it
+    Road map
+
+\section{Related Work}
+    WWW citations about image search
+    Vision citations
+
+\section{Challenges}
+
+\section{Building the database}
+
+\subsection{Collecting images}
+
+With lots of resources like a commercial search companies, it is
+possible to crawl the web and collect a large number of
+screenshots. As an academic research project, we are limited by
+resource. Yet, we still manage to build a research prototype
+database at a non-trivial scale of 100,000 images. These images
+came from three sources.
+
+First, we used commercial image search engines such as Bing. We
+collected a set of keywords that tend to be associated with
+interactive dialog windows such as office, xp, windows, vista,
+mac, options, settings, network, preferences ... etc. We used
+different combinations of these keywords as search terms for image
+search.
+
+While in most image search applications false positive in search
+results may be a curse, it is a blessing for data collection
+purpose. For example, using system preferences as search terms,
+while more than half of images are indeed screenshots of the
+system preferences window, many images are of other interactive
+windows that happen to be on pages that contain either the keyword
+system or the keyword preference. Nevertheless, these screen
+images are useful for users who happen to wish to query the system
+about those interactive windows.
+
+The API has restriction to only the top 1000 results. To increase
+the likelihood of having a screenshot image, we use the filter
+function to restrict to only illustration and graphics (namely,
+ignoring natural photographs). In most cases, about 80\% are left.
+In theory it is possible to greatly expand the database if we have
+inside access to the index of the commercial search engines. We
+obtained a total about 50,000 images.
+
+
+Second, we used reverse image search engine such as TinEye. We
+manually captured screenshots of about 500 interactive windows
+across the three most common OS platforms (XP, Vita, and Mac OS).
+We obtained about 10,000 images in this way, which is about 10
+results for each photo. TinEye is capable for returning matches
+that are almost visually identical to the search image.
+
+Third, we collected a library of electronic books on software
+applications. We extracted all the figures embedded in the file.
+We obtained about 40,000 images.
+
+Each of the three sources have pros and cons. Images from image
+search as associated with only by keywords and may contain many
+screenshots that are not visually relevant at all. TinEye are
+ranked purely by visual similarities; top pages may not
+necessarily contain any useful information. Images from book
+library are usually accompanied by quality text, but their scope
+is very limited; they cover mostly popular software programs there
+is financial incentives to publish books on. Our hope is that by
+combining these three data sources, we can have a rich variety of
+useful data both visually and textually relevant to user queries.
+
+
+\subsection{Indexing images}
+        use hamming embedding
+        use ransac
+
+\subsection{Extracting Text}
+
+A table summarize what features are applicable to which data type.
+
+Give a real example of each type of text.
+
+\textbf{Title} We also extract the text in the Title tag from the
+HTML header. For book, the title can be too general.
+
+\textbf{Heading} Some web page may contain multiple figures
+illustrating different parts and provide heading for each part.
+This heading can be more specific than the page title. However, to
+extracting section headings reliably is harder for books in pdf
+format. Some PDFs have outlines. We can extract the nearest
+chapter or section heading.
+
+\textbf{Alt Text} ALT tag provides information redundancy in case
+when the image fails to be displayed or for users with visual
+impairment. Also, it is useful for keyword-based image search. ALT
+tag text can be used to determine the content of the image,
+allowing search to go from keyword to image. However, in our
+application, such text is redundant. It does not provide any
+additional information other than what the user already knows by
+reading the figure. For example, the ALT tag for the System
+Preferences window is System Preferences but it is already obvious
+by reading the title of the window.
+
+\textbf{Caption} In books, figures are often clearly labeled with
+captions. Thus, the text in the captions are extracted. However,
+there's less common to add captions on web images, other than
+online photo albums.
+
+\textbf{Explicit reference} A figure and references made to it may
+not be on the same page. It is necessary to search a couple pages
+before and after the page the figure is on. This is different from
+web pages. On a web page, a figure and the text about it often
+appears on the same page. In contrast, in a typical book page, it
+is not uncommon that a paragraph may refer to a figure one or two
+pages ahead or after the page the paragraph is on due to
+formatting reason. For example, a paragraph on page 100 may say
+\emph{as shown in Figure 12-3} while the figure may be placed on
+page 101 because of formatting constraints. Also, a paragraph can
+make references such as \emph{as shown in Figure 12-3}. The
+paragraph containing such explicit references can be useful too.
+
+
+\textbf{Implicit references} There are also implicit references
+that can be mined. For example, sentences like \emph{as shown
+above} or \emph{see below} indicate that these sentences must be
+relevant to the figure above or below respectively. These
+sentences may not be immediately below or above the figure. But
+one thing we know is that they must be not too far from the
+figure. It is unlikely a paragraph may refer to a figure more than
+10 pages away.
+
+\textbf{Nearby text} If all above fails, we simply extract words
+immediately above and below the image. On web page, images and
+referring text tend to be on the same page. Also, relevant text
+tends to be very near the image added for illustration. Typically,
+the image is placed either above or below the text. Thus, we
+extract the text immediately before and after the image tag.
+
+\textbf{OCR} Useful text are those the user does not already know.
+Text that can also be found in the figure is not as useful. Thus,
+we apply OCR on each figure to determine what text is already
+embedded in each figure. While these OCR text might not be that
+useful to the users, since they can already read them, such text
+can be useful for filtering out sentences that are simply repeat
+of what is in the figure and thus less useful to the users.
+
+\textbf{Action Sentences} With interactive applications, users
+often care about what they can do with this interface. Because of
+the limit in screen real estate, it is often impossible to put in
+lots of text and caption to explain in details what each feature
+can accomplish. Such details can be found on web page. Thus, we
+focus on action keywords such as enable, allow, let, and extract
+sentences containing these action keywords near the figure.
+
+
+
+
+\section{Searching the database}
+
+\subsection{Specifying queries}
+
+There are two ways to specify image queries based on what the user
+is seeing.
+
+First, we provide a Java-based cross-platform search client
+program. Users can download and run the program on any platform.
+They can select any region on the screen by stretching a
+rectangular box and submit the screen to the server. After
+receiving the response, the program will automatically load the
+default web browser to display the search result.
+
+Second, users can also use our system without installing any
+special software. Users can use the built-in image capture
+utility, such as the snipping tool on Windows Vista or the
+Command-Shift+4 hotkey on Mac OS. After capturing a screenshot
+image, the user can use the submit form to send the query image to
+the server and see the results.
+
+Keywords are optional in our search system. They can be specified
+in two ways. After capturing the image users can add a few
+keywords in both the client program and the online form.
+Alternatively, users can type keywords in the search box on the
+result page.
+
+Keywords can serve two purposes. First, they can specify the
+content users wish to see on the returned pages. Second, they can
+describe the screenshot to improve the performance of visual
+matching. Since the screenshot matching can be done very
+accurately, we expect users will very quickly realize that it is
+not necessary to repeat the text embedded in the screenshot, since
+the visual search will take care of it.
+
+
+%Type keywords to filter the results. Keywords can be entered
+%either together when the screenshot is captured, or after the
+%results are displayed.
+
+\subsection{Finding similar images}
+
+%\subsection{Finding relevant pages by keywords]
+% merged into Features
+
+\subsection{Ranking pages}
+
+Note that our results are pages not just images. In other words,
+we are ranking pages where visual similarity of the embedded
+figures plays a very critical role.
+
+Results should be ranked by overall relevancy. Overall relevancy
+can depend on the following features.
+
+\subsubsection{Features}
+
+Visual similarity: if the image is not similar at all, it's
+unlikely the page text would contain anything useful
+
+Image dimensions: If the image is too small, it may be a thumbnail
+and may not be that useful.
+
+Amount of text: the more text the page has, the more information
+this page may contain.
+
+Number of other images on the page: the fewer other images a page
+has, the more likely the information on the page will be about the
+image.
+
+Image position: if the image occupies the prominent position on
+the page, it's more likely to be something important.
+
+Host authority: If an image is from Microsoft, it's more likely to
+contain useful information. Number of other images on the site: if
+a site hosts a lot of screenshot images, it's probably hosting the
+images for some good purposes and those images are more likely to
+be useful.
+
+Quality of other images on the site: If screenshot images hosted
+by a site are known to be accompanied by high-quality text, it's
+more likely new screen images found on this site will also be
+accompanied by high-quality text.
+
+Keyword relevancy: if the page contains more keywords relevant to
+those supplied by the users, the page should ranked higher
+
+\subsubsection{Learning weights}
+
+\subsection{Presenting the results}
+
+New presentation scheme is needed for our purpose. In text search,
+the keywords are highlighted, and displayed in the context of the
+text before and after them. In image search, only the caption,
+url, and dimensions are displayed. Users pay attention to images
+to judge visual relevancy. Also, they pay attention to the url to
+judge authority. In Tineye search (reverse image search), the
+matched images are shown as thumbnails, grouped by "exact copies",
+and ordered by visual similarity. The back links to the pages
+where matched images are found are also displayed. All these are
+not suitable for our purpose.
+
+
+
+
+
+\section{Evaluation}
+
+\subsection{Comparison to keyword search}
+
+\subsection{Comparison of several ranking strategies}
+
+\section{Summary}
