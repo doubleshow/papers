@@ -189,6 +189,7 @@ to technical terms such as \emph{system preferences}, the same
 person may be confined to only Chinese articles since it is not
 obvious how to translate these terms into English.
 
+separating entities and topics
 
 %Users often rely on the names displayed on the interface to
 %describe keywords. Many non-English speaking users use localized
@@ -282,13 +283,13 @@ provides the best variety of images, many of them are not visually
 relevant to any program at all. TinEye is able to provide visually
 relevant images. But these images are ranked only by visual
 relevancy; the page containing the highest ranked image may not
-necessarily contain any useful information. Computer books often
-contain text that is professionally edited and thus of the best
-quality. But they cover a relatively limited scope and their
-contents are less up-to-date compared to the Web. By using all
-these methods, we hope to create a rich repository of technical
-information that is both visually and textually relevant to and
-accessible by general computer users.
+necessarily contain any useful information. Computer books are
+professionally edited and thus containing the highest quality
+text. But they cover a relatively limited range of applications
+and their contents are less up-to-date compared to the Web. By
+using all these methods, we hope to create a rich repository of
+technical information that is both visually and textually relevant
+to and accessible by general computer users.
 
 
 %Since we were constrained by the limit of 1000 images imposed by
@@ -412,16 +413,54 @@ sentences containing these action keywords near the figure.
 
 There are several distinct and useful types of resources in our
 application domain. We want to automatically tag them by type. In
-the current work, we consider four types: blog, tutorial, forum,
-and official documentation. We classify each page based on several
-simple heuristics. For blogs, we look for keywords in the URLs
-such as blog, wordpress ...etc. For official docs, we look for
-company names in the URLs such as microsoft, apple, adobe. For
-tutorials, we look for words such as "tutorial", "how to" ...etc
-and urls of well-known sites such as howto.com or answer.com. For
-forums, we analyze the page structure and identify features
-related to discussion such as threads, reply, and table
-formatting.
+the current work, we consider four categories: book, walkthrough,
+gallery, and general. Book categories are those articles extracted
+from pdf books. Walkthrough on articles that give step-by-step
+instructions of how to perform certain computing tasks. These
+articles tend to have an ordered or unordered list of action
+items. And between two action items, there are screenshot images
+included to provide illustration. Also, they tend to have many
+sentences that begin with common interactive action verbs such as
+click, enter, type, and open. There can also be explicit mentions
+of the the word step, walkthrough, or guide. Gallery are those
+articles with many images but relative less amount of text. All
+the rest of the articles not classified into the above three
+categories go into the general categories.
+
+
+\begin{figure}
+\includegraphics[width=1\columnwidth]{figure/walkthrough_examples.png}
+\caption{Examples of articles providing step-by-step walkthroughs.}
+\end{figure}
+
+
+About 52\% of articles are classified as walkthrough, while a
+small number of articles are galleries (about 4.4\%).
+
+\begin{table}
+\centering \caption{Number of images in each category.} \label{}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+      & General & Walkthrough & Gallery & Book \\
+\hline
+Total & 34,509 & 30,449 & 2,943 & 55,244\\
+ \hline
+(\%)  & 32.7 & 28.7 & 2.8 & 35.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+We classify each page based on several features. For blogs, we
+look for keywords in the URLs such as blog, wordpress ...etc. For
+official docs, we look for company names in the URLs such as
+microsoft, apple, adobe. For tutorials, we look for words such as
+"tutorial", "how to" ...etc and urls of well-known sites such as
+howto.com or answer.com. For forums, we analyze the page structure
+and identify features related to discussion such as threads,
+reply, and table formatting.
 
 It is possible for a page to be assigned multiple tags. For
 example, someone can write a tutorial on his blog. Then, the page
@@ -438,36 +477,30 @@ What are the types of websites hosting useful screenshots?
 
 \subsection{Specifying queries}
 
-There are two ways to specify image queries based on what the user
-is seeing.
+Sikuli Search supports mixed-modality queries in order to optimize
+the effectiveness in searching technical articles about
+interactive programs. A typical query to Sikuli Search consists of
+a screenshot of a program and, optionally, a set of keywords to
+specify what aspects of the program the retrieved articles are
+supposed to cover.
 
-First, we provide a Java-based cross-platform search client
-program. Users can download and run the program on any platform.
-They can select any region on the screen by stretching a
-rectangular box and submit the screen to the server. After
-receiving the response, the program will automatically load the
-default web browser to display the search result.
+Screenshot queries can be specified in two ways. First, users can
+run a cross-platform, Java-based client interface we developed to
+capture the screenshot of a selected window or an arbitrary screen
+region. The client interface will submit the screenshot as the
+image query to Sikuli Search and display the search results in the
+default web browser. Alternatively, users can use any existing
+image capture utilities such as the snipping tool on Windows Vista
+or the Command-Shift+4 hotkey on Mac OS to capture screenshots.
+Users can use a Web interface to submit the screenshots to Sikuli
+Search and view the results directly.
 
-Second, users can also use our system without installing any
-special software. Users can use the built-in image capture
-utility, such as the snipping tool on Windows Vista or the
-Command-Shift+4 hotkey on Mac OS. After capturing a screenshot
-image, the user can use the submit form to send the query image to
-the server and see the results.
+Keywords queries are optional and can be specified in three ways.
+They can be entered together with the screenshot queries on both
+the client and Web interfaces. Also, as the users are browsing the
+results, they can enter keywords to filter and/or fine the
+results.
 
-Keywords are optional in our search system. They can be specified
-in two ways. After capturing the image users can add a few
-keywords in both the client program and the online form.
-Alternatively, users can type keywords in the search box on the
-result page.
-
-Keywords can serve two purposes. First, they can specify the
-content users wish to see on the returned pages. Second, they can
-describe the screenshot to improve the performance of visual
-matching. Since the screenshot matching can be done very
-accurately, we expect users will very quickly realize that it is
-not necessary to repeat the text embedded in the screenshot, since
-the visual search will take care of it.
 
 
 \subsection{Finding similar images}
@@ -502,20 +535,28 @@ are relevant, they may be less useful since it is harder for users
 to tell instantly which parts of the interactive window this
 cropped screenshot is covering.
 
-\item[Display dimensions]
+\item[Resize ratio]
 
-We consider how the image is actually displayed on the page. These
-are specified in the image tag the width and height fields when
-they are different from the actual dimension of the image file.
-Designers choose the ideal dimensions to display to make the
-images easy to see together with the text this image is meant to
-illustrate. If the image is too small, it may be a thumbnail for
-other purposes and may not be that useful. Similarly, if an image
-is too large, it's unlikely there's enough space left on a page to
-provide a lot of useful text. Or it could be the page showing the
-detailed view of the image. Thus, we sample a large number of
-screenshots and compute their average display dimensions. Then, we
-penalize images that are too big or too small.
+When a screenshot image of a program is captured and included in
+an article, it is often resized to dimensions that are most
+suitable for reading. The ratio by which an image is resized
+provides a cue as to the image's role. For example, an image
+subject to a high resize ratio may suggest that it is displayed as
+a thumbnail to provide just enough details for identification,
+whereas a moderately resized image may suggest the desire to
+preserve more details for users to actually read its content. The
+resize ratio of can be computed as the ratio of the captured size
+(off the desktop screen) and the embedded size (in a Web or book
+page). The captured size can be derived simply from the size of
+the query image. For images extracted in PDF pages, the size
+information is readily available. For Web images, the embedded
+size is often contained in the width and height fields of the
+<img> tag. In the absence of these fields, the size can be
+extracted from the header of the image file. We took a number of
+good screenshot web images, compute their average and standard
+deviation. We assign 3 to images within 1 std around the average,
+2 within 2, and 1 outside of 2std.
+
 
 \item[Position]
 
@@ -535,14 +576,6 @@ screenshots.
 
 \begin{description}
 
-\item[Amount]
-The more text a page has, the more information users can get.
-
-\item[Special text]
-Whether or not each of the N kinds of special text labels can be
-found on the page. Can we find a caption for this image on the
-page? Can we find a clear reference to this image on the page?
-Does this page have a title?
 
 \item[Search terms]
 If the page contains more keywords relevant to those supplied by
@@ -555,6 +588,17 @@ of search terms found at that location. Each term is then
 inversely weighted by its global frequency, reducing the weight of
 very common words. When there's no search term given, this does
 not have any effect.
+
+
+\item[Amount]
+The more text a page has, the more information users can get.
+
+\item[Special text]
+Whether or not each of the N kinds of special text labels can be
+found on the page. Can we find a caption for this image on the
+page? Can we find a clear reference to this image on the page?
+Does this page have a title?
+
 \end{description}
 
 \subsubsection{Site Features}
@@ -575,7 +619,8 @@ information. Number of other images on the site: if a site hosts a
 lot of screenshot images, it's probably hosting the images for
 some good purposes and those images are more likely to be useful.
 Also, maybe some books are more trusted by users than the other
-books.
+books. We find the top 10 domains with the most number of
+screenshots and designate each domain as a binary feature.
 
 \item[Quality]
 
@@ -627,6 +672,9 @@ matched images are shown as thumbnails, grouped by "exact copies",
 and ordered by visual similarity. The back links to the pages
 where matched images are found are also displayed. All these are
 not suitable for our purpose.
+
+should not be a big departure from the design of exisrting search
+engines, so we can leverage the users' familarity.
 
 Figure shows the detail view of how a result is typically
 displayed. The design is very similar to how search results are
@@ -692,6 +740,13 @@ also correctly identified the ground truth items.
 We received X answers. Y of them are approved. The approval rate
 was X.
 
+\begin{figure*}
+\includegraphics[width=2\columnwidth]{figure/query_examples.png}
+\caption{Examples of query images used in screenshot matching
+experiments.}
+\end{figure*}
+
+
 \subsection{Compare to keyword search}
 
 We compare the results to two keyword search baselines. The first
@@ -736,9 +791,29 @@ cheat by guessing. Also, the set will be presented to at least two
 different subjects. We keep only results that are consistent
 within and between subjects.
 
+\subsection{Bilingual search}
+
+\begin{figure*}
+\includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
+\caption{Number of correct top 10 matches for 15 programs in five non-English
+languages: Spanish (S), French (F), German (G), Chinese (C) and Korean (K).}
+\end{figure*}
+
+
 \subsection{Comparison to keyword search}
 
 \subsection{Comparison of several ranking strategies}
+
+\section{Discussion}
+
+Keywords can serve two purposes. First, they can specify the
+content users wish to see on the returned pages. Second, they can
+describe the screenshot to improve the performance of visual
+matching. Since the screenshot matching can be done very
+accurately, we expect users will very quickly realize that it is
+not necessary to repeat the text embedded in the screenshot, since
+the visual search will take care of it.
+
 
 \section{Summary}
 
