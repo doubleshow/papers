@@ -231,8 +231,80 @@ C: Use multi-modal search
     Road map
 
 \section{Related Work}
-    WWW citations about image search
-    Vision citations
+
+There has been a growing research interests in the indexing,
+searching, and organzing images on the web. Many researchers shared
+their results in the recent WWW conferences.  Many classic IR problems
+have been revisited in a new context of images The Spam problem.
+Mehta et al \cite{Mehta} tackled spam that are images using visual
+features and near duplicate detection.  The result
+diversfication. Kennedy and Naaman \cite{Kennedy} focused on how to
+generate a divserse and represenative search results fo landmark
+images. van Leuken et al \cite{vanLeuken} also dealt with diverse
+image search results based on visual clustering. Some dealt with
+organizing photos. The ranking problem. Jing and Baluja \cite{Jing}
+tried to improe the ranking of product images using PageRank.  The
+relevancy judgement problem. Arase et al \cite{Arase} proposed a
+game-based approach to college human assigned relevancy of landmark
+images. Li et al \cite{Li} focused on imporving the relevance
+judgement of web search results with image excerpts, identifying the
+dominant image in a page and displyaing it in the excerpt.  Authority
+identification problem. Lempel and Soffer \cite{Lempel} built a image
+retrieval system; by analysing link structure, they determine whether
+an image is coming from an authoritive source without using any visual
+information.  Crandall et al \cite{Crandall} proposed a technique of
+organizing a large dataset of geotagged photos using visual, textual,
+and temporal features. In relation to these works, ours depend on
+state-of-the-art visual analsis techniques to index and search
+images. But unlike these works, rather than the end, searching images
+is a mean to the goal of finding useful information.
+
+Growing interests in cross language. Tanaka-Ishii and Nakagawa
+\cite{Tanaka-Ishii} built a usage consultation tool for language
+learner to engage in multi-lingual search to find the usage of any
+string of words. Scholl et al \cite{Scholl} explored ways to recognize
+web genres in a language independent manner based on structure of HTML
+markup. Ni et al \cite{Ni} seek ways to analyze and organize Web
+information written in different languages, mininig multilingual
+topics from Wikipedia. In relation to these works, the current work
+offers another interesting possiblity---searching based on the
+univesal visual language of screenshots.
+
+There is also focus on helping comptuer users. Medhi et al \cite{Medhi}
+studied the optimal way of presenting audio-visual know-how knowledge to
+novice computer users.
+
+Several works have been presented to enablge users to search in more
+than one modalities. Narayan et al \cite{Narayan} studied multi-modal
+interfaces for mobile devices for accessing web information through a 
+personalized dialog based interaction basedon speech and text. 
+Dowman et al \cite{Dowman} studied the problem of indexing and
+searching radio and televiton news using speech recognition transcript and text
+and meta data of the web pages containg related news. Our multi-modal
+search is to use image and keywords with faceted search capabilties.
+
+Amazon mechanical turk. In several components of the current work, we
+applied AMT for bot training and testing.  Recently, many works have
+used AMT for labeling training images and for evaluating
+systems. Kittur et al \cite{Kittur} experimented the capabiliy of AMT
+to perform user stuides for collecting ratings of Wikipedia articles
+that match expert judgements.  In IR, Liu et al \cite{Liu} used AMT
+successfully to evaluated the system for predicting seeker
+satisfcation in online QA communicties, and offer researchers without
+lots of resources like commercial entities to conduct large-scale
+experiments.  They identified advantages, low cost and covers a wide
+demographics than lab-based studies.  In comptuer vision, XXX used AMT
+to evaluate their results. However, as identified by \cite{Liu}, there
+are certain risks associted with this method.  risks of getting
+dishonest answers unless tasks are forumlated in such a way that the
+optimal strategy for workers is to perform the task in the honest
+manner. This has been a focus of some researchers in the IR
+community. For example, Kazai et al \cite{Kazai} proposed a social
+game based method for quality control of relevance assessment. In
+all of our applications of AMT, we built in validation 
+mechansism to control quality.
+
+
 
 \section{Challenges}
 
@@ -341,7 +413,7 @@ Give a real example of each type of text.
 \begin{description}
 
 \item[Title] We also extract the text in the Title tag from
-the HTML header. For book, the title can be too general.
+the HTML header. For book, we simply use its title.
 
 \item[Heading] Some web page may contain multiple figures
 illustrating different parts and provide heading for each part.
@@ -350,69 +422,71 @@ extracting section headings reliably is harder for books in pdf
 format. Some PDFs have outlines. We can extract the nearest
 chapter or section heading.
 
-\item[Alt Text] ALT tag provides information redundancy in
-case when the image fails to be displayed or for users with visual
-impairment. Also, it is useful for keyword-based image search. ALT
-tag text can be used to determine the content of the image,
-allowing search to go from keyword to image. However, in our
-application, such text is redundant. It does not provide any
-additional information other than what the user already knows by
-reading the figure. For example, the ALT tag for the System
-Preferences window is System Preferences but it is already obvious
-by reading the title of the window.
+\item[Alt Text] An image's ALT tag provides information redundancy in
+  case when the image fails to be displayed. The text attrbute of an
+  ALT tag is often a useful feature for a keyword-based image search
+  engine to index and search images. Based on our observation, the Alt
+  text of the screenshot of a program (e.g., System Preferences) tends
+  to be the title of the program (e.g., Alt=``system preferences'').
+  Thus, such text may not provide any additional information other
+  than what the users can already read directly on the computer
+  screen. Yet, we expect Alt text can still be helpful in
+  strengthening users' confidence in a search result, by checking
+  whether both the program's screenshot and title appear in the
+  result's excerpt.
 
-\item[Caption] In books, figures are often clearly labeled
-with captions. Thus, the text in the captions are extracted.
-However, there's less common to add captions on web images, other
-than online photo albums.
+\item[Caption] Many screenshot images are accompanied by caption text
+  to briefly describe the idea meant to be illustrated by the images.
+  Especially in books, almost all the figures, whether or not they are
+  screenshots, contain captions that can reliably extracted by looking
+  for string patterns that begin with the word Figure.  Even in the
+  articles on the web, captions can sometimes be found below or above
+  images. These captions are harder to detect because often they are
+  not explicitly labeled by the word Figure. Thus, we identify
+  potential caption text based on two simple heuristics: (1) is it
+  immediately above or below the image and (2) does it have a
+  different style from those of surrounding paragraphs.
 
-\item[Explicit reference] A figure and references made to it
-may not be on the same page. It is necessary to search a couple
-pages before and after the page the figure is on. This is
-different from web pages. On a web page, a figure and the text
-about it often appears on the same page. In contrast, in a typical
-book page, it is not uncommon that a paragraph may refer to a
-figure one or two pages ahead or after the page the paragraph is
-on due to formatting reason. For example, a paragraph on page 100
-may say \emph{as shown in Figure 12-3} while the figure may be
-placed on page 101 because of formatting constraints. Also, a
-paragraph can make references such as \emph{as shown in Figure
-12-3}. The paragraph containing such explicit references can be
-useful too.
+\item[References] Sometimes references to images can be found in
+  sentences relatively away from the images. Some references are based
+  on explicit labels, such as the phrase \emph{as shown in Figure
+    X}. Some references are based on layout relationships, such as
+  such as the phrase \emph{see below}. Sentences containing such
+  references are likely to relevant to the images they refer
+  to. Presented in the excerpt, these sentences may indicate the types
+  of knowledge users can expect to learn if they read the whole
+  article. To resolve a label-based reference, we look for the image
+  whose caption contains the matching label. For web articles, the
+  image is always on the same page, whereas in book articles, the
+  referred image can appear a few pages away due to formatting
+  limitations. To resolve a layout-based reference, we scan in the
+  direction indicated in the reference (e.g., scan backward for see
+  below) until an image is found. After resolving the reference, a
+  link between the referred image and the referring sentence is
+  established. Whenever an image is retrieved, sentences referring to
+  it can also be retrieved to be included in the excerpt.
 
+\item[Action Phrases] Since one of the anticipated uses of our systems
+  is to learn how to perform interactive actions using a particular
+  program, phrases containing certain action keywords can potentially
+  be useful. For examples, phrases containing keywords such as
+  configure, click, and open, may indicate to the users that the
+  article are likely to explain what can be configured, what should be
+  clicked, and what must be opened, using the program. Thus, we
+  compile a list of common action keywords and extract action phrases
+  from each images' surrounding text.
 
-\item[Implicit references] There are also implicit references
-that can be mined. For example, sentences like \emph{as shown
-above} or \emph{see below} indicate that these sentences must be
-relevant to the figure above or below respectively. These
-sentences may not be immediately below or above the figure. But
-one thing we know is that they must be not too far from the
-figure. It is unlikely a paragraph may refer to a figure more than
-10 pages away.
+\item[Nearby Text] If none of the above useful excerpt phrases can be
+  extracted, we simply extract nearby sentences around the image and
+  use it as the exceprt.
 
-\item[Nearby text] If all above fails, we simply extract
-words immediately above and below the image. On web page, images
-and referring text tend to be on the same page. Also, relevant
-text tends to be very near the image added for illustration.
-Typically, the image is placed either above or below the text.
-Thus, we extract the text immediately before and after the image
-tag.
-
-\item[Figure OCR] Useful text are those the user does not already
-know. Text that can also be found in the figure is not as useful.
-Thus, we apply OCR on each figure to determine what text is
-already embedded in each figure. While these OCR text might not be
-that useful to the users, since they can already read them, such
-text can be useful for filtering out sentences that are simply
-repeat of what is in the figure and thus less useful to the users.
-
-\item[Action phrases] With interactive applications, users
-often care about what they can do with this interface. Because of
-the limit in screen real estate, it is often impossible to put in
-lots of text and caption to explain in details what each feature
-can accomplish. Such details can be found on web page. Thus, we
-focus on action keywords such as enable, allow, let, and extract
-sentences containing these action keywords near the figure.
+%% \item[Figure OCR] Useful text are those the user does not already
+%% know. Text that can also be found in the figure is not as useful.
+%% Thus, we apply OCR on each figure to determine what text is
+%% already embedded in each figure. While these OCR text might not be
+%% that useful to the users, since they can already read them, such
+%% text can be useful for filtering out sentences that are simply
+%% repeat of what is in the figure and thus less useful to the users.
 
 \end{description}
 
@@ -440,9 +514,8 @@ categories go into the general categories.
 \caption{Examples of articles providing step-by-step walkthroughs.}
 \end{figure}
 
-
-About 52\% of articles are classified as walkthrough, while a
-small number of articles are galleries (about 4.4\%).
+About 28.7\% of articles are classified as walkthrough, while a
+small number of articles are classified as galleries (about 2.8\%).
 
 \begin{table}
 \centering \caption{Number of images in each category.} \label{}
@@ -752,20 +825,23 @@ examples of the tag clouds.
 
 \subsection{Screenshot matching performance}
 
-We manually captured 50 unique screenshots from Windows, 50
-screenshots from Windows Mac. We also captured screenshots of a number
-of popular programs. Figure \ref{fig:query_examples} shows a number of
-screenshot examples.  We evaluated among the returned images, how many
-of them are correct. We used AMT to evaluate the result. Each result
-is independently reviewed by as least two workers. We only ask them to
-rate at most top 10. For some screenshot queries, the returned results
-can be fewer than 10. To prevent the Turkers from cheating, we mixed
-in one image known to be a match (the query image itself) and two
-images known to be mismatch (two other query images). The results are
-shuffled. This setup ensures that the optimal strategy for the workers
-is to perform tasks honestly. Turker marks each image in the result as
-match or mismatch. The assignment is approved only if the Turker also
-correctly identified the ground truth items.
+In this experiment, we evaluated the core functionality of our system:
+matching screenshot images of computer programs. We created a test set
+of 100 unique images that cover three major operating systems (Windows
+XP, Windows Vista, and Mac OS X) and several popular programs such as
+Microsoft Office, Firefox, and Skype. Figure \ref{fig:query_examples}
+shows a number of screenshot examples.  We evaluated among the
+returned images, how many of them are correct. We used AMT to evaluate
+the result. Each result is independently reviewed by as least two
+workers. We only ask them to rate at most top 10. For some screenshot
+queries, the returned results can be fewer than 10. To prevent the
+Turkers from cheating, we mixed in one image known to be a match (the
+query image itself) and two images known to be mismatch (two other
+query images). The results are shuffled. This setup ensures that the
+optimal strategy for the workers is to perform tasks honestly. Turker
+marks each image in the result as match or mismatch. The assignment is
+approved only if the Turker also correctly identified the ground truth
+items.
 
 We received X answers. Y of them are approved. The approval rate
 was X.
@@ -780,55 +856,49 @@ experiments.}
 
 \subsection{Compare to keyword search}
 
-We compare the results to two keyword search baselines. The first
-baseline is regular web search result. The second baseline is
-image search result.
+In this experiment, we compared the proposed multi-modal search engine
+to two keyword search baselines. The first baseline is a commerical
+web search engine.  The second baseline is a commerical image search
+engine. We were interested in whether users would judge the search
+results returned by these three systems differently in terms of
+perceived relevancy. We recruited workers from Amazon Mechanical Turk
+to perform relevancy judgement.
 
-For each query instance, we collected the top four results
-returned by each system for a total of 12 results. We added three
-known garbage links using only one of the terms. To generate
-results using keyword search, For example, for "system properties"
-we used the word "system" to generate results expected to be bad.
-Workers' were told some of the results were obviously useful and
-some not useful. Their assignments were approved only if they
-rated these obvious ones correctly. This setup ensures the optimal
-strategy is to answer honestly.
+The comparison is based on 20 query instances (10 XP and 10 Mac
+programs). Each query instance was submitted to each of the three
+systems. For the two keyword search baselines, we used the words in
+the title bar of each program and the name of the operating system as
+search terms, for example, mac system preferences. For our system, we
+used only the screenshot of the program as the search term. We
+collected the top four articles returned by each system and merged
+them into a single list of 12. As validation, we added 3 irrelevant
+articles and 1 duplicate article to the list. Irrelevant articles were
+generated by sampling from the top results returned by the image
+search baseline using only one of the search terms, for example, using
+the word preferences as the search term for mac system
+preferences. Thus, in each assignment, a worker was shown a list of 16
+articles and asked to rate the relevancy on a 5-point scale. The list
+was randomly shuffled to remove any bias due to ordering.  We only
+accepted the ratings given by workers who rated the validation
+articles accurately, which was checked by (1) whether irrelevant
+articles were rated as irrelevant and (2) whether duplicate articles
+were rated consistently. The presence of validation checks
+ensure that the optiaml strategies for the workers is to
+provide answer in an honest manner.
 
-We compare each pair of systems. Each subject will perform 100
-tasks and paid 10 dollars for their efforts. To generate a pool of
-results, we pick 25 application windows from XP, 25 from Mac OS.
-We generate keywords by taking the words from the title of each
-window. We use these keywords to search Bing Web search and Image
-search respectively. Since there are three systems, the total
-number of results are 150. Since we want each result to be
-evaluated by twice by two subjects, the total number of tasks
-needed are 600.
-
-At each task, the subject is presented with 10 results by
-combining the top 5 results returned by each system in the pair.
-The subject is asked to identify the most and least useful pages.
-The results are randomly scrambled to remote the bias due to the
-ordering in the presentation. We will be able to know which system
-has the most number of results marked as most useful by users.
-
-We use Amazon Mechanical Turk as a proxy of real users. To avoid
-cheating, after evaluating a result, the subject is asked to
-evaluate the same result but in a different ordering. The
-rationale is that if the subject is serious, the subject will
-likely make the same judgement regarding the usefulness even
-though they are ordered differently. In other words, the optimal
-strategy is to work on the task seriously. The subjects can not
-cheat by guessing. Also, the set will be presented to at least two
-different subjects. We keep only results that are consistent
-within and between subjects.
+In total, we obtained X unique ratings from Y workers. The 
+approval rate was Z. Table X summarizes our findings. 
 
 \subsection{Bilingual search}
 
-We took screenshots of 15 representative programs on Mac in five
-languages. We checked the top 10 matches returned by the image search
-engine. We recorded the number of correct matches. Table X summarizes
-the result. A match is considered correct if it is an image of the same
-vvprogram. 
+In this experment, we examined the ability of our system to search
+across language boundaries. We took screenshots of 15 representative
+programs on Mac in five languages (Spanish, French, German,
+Chinese, and Korean) and obtained a total of 75 test
+images.  We submitted these images to our 
+system and retrieved the top 10 matched screenshots. We recorded
+the number of correct matches. Table X summarizes
+our findings.
 
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
