@@ -321,9 +321,16 @@ to and accessible by general computer users.
 
 
 \subsection{Indexing images}
-        use hamming embedding
-        use ransac
-        use haedo for scalability
+Challenges are:
+1. There are a lot of screenshot images.
+2. There are different sizes.
+3. Some of them are cropped.
+4. Some of them are superimposed on a larger image.
+5. Some of the components may be rearranged. For example,
+in system prefrences, the icons may have shifted.
+
+Exaplin how using hamming embedding and related techniques can
+help us deal with each of these challenges.
 
 \subsection{Extracting Text}
 
@@ -633,32 +640,43 @@ quality. Average ranking score of the site.
 
 \end{description}
 
-\subsubsection{Learning weights}
+\subsubsection{Choosing feature weights}
 
-We initialize the weights based on intuition. Then we examine the
-results and mark those that are relevant, making adjustment to
-weights accordingly. At the deployment, the system can continue to
-improve its ranking algorithm using user feedback, in particular,
-click-throughs.
+Since not all features are equally important, it is necessary to
+choose a set of weights in order to reflect these features' relative
+importance. In our prototype system, we chose weights in three steps.
 
-Offline learning. Initially, we do not have any user to train the
-weighting scheme. Thus, we use AMT. We randomly sample five
-results from the top 20 returned under the default weighting
-scheme.  Subjects are asked to mark the most useful result and the
-least useful result. Each marking will give us a data point where
-one is better than the other. Given a set of ordering and feature
-vectors, we can then train the weights based on real data and find
-the weights that can produce a ranking that respect most number of
-the ordering constraints.
+First, we apply RankSVM to learn weights for query independent
+weights.  We used Amazon Mechnical Turk to collect training
+data. RankSVM was originally proposed by X to learn how to weight a
+set sof features from orderings inferred from click-throughs. At the
+development stage, we did not have any click-through data to work
+with. Thus, we recruited workers from AMT to provide us explicit
+relevancy ratings from which to infer ordering contraints. We chose
+five query images known to have many good matches. We added four
+validation results.  Two results were known to be irrelevant; they
+were geneated by randomly picking the results of other
+queries. Workers must identify them as irrelevant. The other two
+validation results are copies of other results in the set. Workers
+must provide consistent answers for both. In total, a worker rates the
+relevancy of 10 results on a 5-point scale (0: completely useless, 5:
+very useful. From each task, we collected 6 new relevancy ratings. We
+generated an ordering constraint for each pair of ratings that differ
+by at least one. We obtained 600 ordering constraints from 50 unique
+tasks. Based on these contraints, we were able to apply RankSVM to
+learn appropriate feature weights. Also, at this stage, we do not have
+queries to work with.
 
-Online learning. Once the system is put online, it can continue to
-adjust the weights. Instead of using a controlled
-setup, we record the click-through. After accumulating enough
-click-throughs, we can use the ratio of numbers of click-through
-and number of retrieval as an estimate of the usefulness of the
-pages. Then, we can identify the most useful and the least useful
-pages in the result to obtain a ordering constraint that can be
-added to the training data.
+Next, we set the weights of query dependent features based on the
+weights of corresponding query independent features. For example, if
+the weight of \emph{has_caption} feature is high, it is likely the
+weight of \emph{has_keyword_in_weight} should be hight. Thus, we set
+the weight of each query dependent feature to 1.5 times the weight of
+its corresponding query independent feature.
+
+Finally, we bring the system online with these initial set of
+weights. The system records user click-throughs and can continue to
+refine the weights by applying RankSvm.
 
 \subsection{Presenting the results}
 
@@ -672,6 +690,8 @@ matched images are shown as thumbnails, grouped by "exact copies",
 and ordered by visual similarity. The back links to the pages
 where matched images are found are also displayed. All these are
 not suitable for our purpose.
+
+\subsubsection{Exceprt}
 
 should not be a big departure from the design of exisrting search
 engines, so we can leverage the users' familarity.
@@ -691,16 +711,15 @@ title of the book. Clicking on the title will bring the user to
 the book store where the book can be purchased. The resource type
 tag is displayed in front of the title.
 
-For description, we generate a paragraph based on the set of
-relevant phrases extracted by the methods described in Section
-\ref{}. We limit the size of the paragraph to at most 30 words and
-not exceeding two lines of text . The type of resource is clearly
-marked. The context in which the figure appears in the text is
-visually represented. The user can quickly read the text above or
-below the image. The explicitly references such as \emph{As shown
-in Figure ()} is replaced by a thumbnail for quick visualization
-of the context. If keywords are specified, their occurrences in
-the text are highlighted.
+For description, we generate a paragraph based on the set of relevant
+phrases extracted by the methods described in Section \ref{}. We limit
+the size of the paragraph to at most 30 words and not exceeding two
+lines of text . The type of resource is clearly marked. The context in
+which the figure appears in the text is visually represented. The user
+can quickly read the text above or below the image. The explicitly
+references such as \emph{As shown in Figure ()} is replaced by a
+thumbnail for quick visualization of the context. If keywords are
+specified, their occurrences in the text are highlighted.
 
 For source, we display the abbreviated url for web results. The
 user can also view the cached version of the page in case the link
@@ -708,6 +727,8 @@ is temporarily unavailable. This is very similar to typical web
 search. For book results, the source is the chapter/section
 headings. The user can also preview the content of the page,
 assuming the copyright issue has been resolved.
+
+\subsubsection{Faceted search}
 
 We use the Exhibit framework for displaying a list of results.
 Exhibit is a framework for web developers to create html pages
@@ -718,24 +739,33 @@ resource types, by sites, and/or by keywords. Results can also be
 grouped together. It provides pagination. Figure \ref{} shows the
 detailed view of the faceted search control.
 
+We also generated TagClouds. Commond words are shown in larger fonts
+Stop words are removed. Some interesting obseravtions. First, what you
+can do with tend ot be prominent keywords. Ttitle of the program tend
+to be prominent keywords. These allow users to take a quick glance and
+get a good sense what the range of possible topics they can find
+online about this particular program. Figure \ref{} shows some
+examples of the tag clouds.
+
 \section{Evaluation}
 
 
 \subsection{Screenshot matching performance}
 
 We manually captured 50 unique screenshots from Windows, 50
-screenshots from Windows Mac. We evaluated among the returned
-images, how many of them are correct. We used AMT to evaluate the
-result. Each result is independently reviewed by as least two
-workers. We only ask them to rate at most top 10. For some
-screenshot queries, the returned results can be fewer than 10. To
-prevent the Turkers from cheating, we mixed in one image known to
-be a match (the query image itself) and two images known to be
-mismatch (two other query images). The results are shuffled. This
-setup ensures that the optimal strategy for the workers is to
-perform tasks honestly. Turker marks each image in the result as
-match or mismatch. The assignment is approved only if the Turker
-also correctly identified the ground truth items.
+screenshots from Windows Mac. We also captured screenshots of a number
+of popular programs. Figure \ref{fig:query_examples} shows a number of
+screenshot examples.  We evaluated among the returned images, how many
+of them are correct. We used AMT to evaluate the result. Each result
+is independently reviewed by as least two workers. We only ask them to
+rate at most top 10. For some screenshot queries, the returned results
+can be fewer than 10. To prevent the Turkers from cheating, we mixed
+in one image known to be a match (the query image itself) and two
+images known to be mismatch (two other query images). The results are
+shuffled. This setup ensures that the optimal strategy for the workers
+is to perform tasks honestly. Turker marks each image in the result as
+match or mismatch. The assignment is approved only if the Turker also
+correctly identified the ground truth items.
 
 We received X answers. Y of them are approved. The approval rate
 was X.
@@ -744,6 +774,7 @@ was X.
 \includegraphics[width=2\columnwidth]{figure/query_examples.png}
 \caption{Examples of query images used in screenshot matching
 experiments.}
+\label{fig:query_examples}
 \end{figure*}
 
 
@@ -793,16 +824,18 @@ within and between subjects.
 
 \subsection{Bilingual search}
 
+We took screenshots of 15 representative programs on Mac in five
+languages. We checked the top 10 matches returned by the image search
+engine. We recorded the number of correct matches. Table X summarizes
+the result. A match is considered correct if it is an image of the same
+vvprogram. 
+
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
 \caption{Number of correct top 10 matches for 15 programs in five non-English
 languages: Spanish (S), French (F), German (G), Chinese (C) and Korean (K).}
 \end{figure*}
 
-
-\subsection{Comparison to keyword search}
-
-\subsection{Comparison of several ranking strategies}
 
 \section{Discussion}
 
