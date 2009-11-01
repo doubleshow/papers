@@ -400,6 +400,85 @@ in system prefrences, the icons may have shifted.
 Exaplin how using hamming embedding and related techniques can
 help us deal with each of these challenges.
 
+\subsection{Finding similar images}
+Our image search task can be categorized as a content-based image
+retrieval (CBIR) problem; we are given a screenshot of an application
+the user would like information about and the desired result is a
+ranked list of visually similar images.  The general CBIR task is
+ill-defined as each problem domain imposes requirements on what
+aspects of the image is relevant for retrieval.  For example, when
+searching for photos of a particular person, we may largely ignore the
+scene while focusing on detecting and recognizing faces; however, if
+our goal is to collect photos taken in front of national landmarks, we
+would place our focus on the background (for a recent survey on CBIR
+methods see (TODO Cite Datta)).
+
+In the domain of common GUI screenshots, we have several desired
+properties of a CBIR system.  As book and web screenshots are often
+post processed by authors to conserve space and draw attention to
+relevant parts of the interface, the image search solution should be
+invariant to image manipulations including cropping, scaling,
+rotation, color variations, and illumination changes.  Moreover,
+visual annotations are commonplace as are compositions of different
+screenshots, potentially describing a sequence of user actions.  The
+GUI elements themselves often vary visually as interface elements may
+be moved, scaled, occluded, and themed.  As a primary goal of the
+proposed system is to facilitate cross-lingual search, the proposed
+system should handle variations in application text.  Tutorials and
+documentation for different software versions are often largely
+applicable, though the interface may have new visual elements, an
+ideal CBIR system would be robust to minor GUI modifications.  To
+serve as a useful method of locating help documentation, the system
+must have real-time performance on comprehensive databases of book and
+web figures.
+
+Our solution to these problems is to model visually descriptive
+regions of the image individually.  This allows for spatial variations
+and considerable performance gains as only visually relevant regions
+of the image are processed.  The images are converted to gray to
+reduce common color theme variations and the differences between gray
+and color images often found in PC help books and websites
+respectively.  To achieve scale, rotation, and illumination
+invariance, we use the SURF feature point detector and descriptor
+(TODO Cite Van Gool) to find and describe regions of interest.  The
+SURF descriptor produces a 64 dimensional feature vector for each
+feature point found and for our purposes the spatial coordinates and
+scale of the features are neglected.
+
+Given a list of feature vectors for each image in our database, our
+aim is to produce a fast image comparison system.  A potential method
+is to store all of the feature vectors for all images, and given a
+query image cast a vote for each database image that has a feature
+within some euclidean distance to a query image feature; however, this
+method would require a substantial amount of memory necessary to allow
+for fast comparison.  Moreover, every query feature would be compared
+to every database feature, preventing real-time performance on even
+modestly sized databases.  To combat this problem, we use the method
+described in (TODO Cite Schmid).  Provided a database of book and web
+images, we compute SURF features. The features are clustered using
+K-Means, and each individual feature is assigned to its nearest
+cluster.  For each cluster, we compute the median value for each of
+the 64 dimensions in the SURF descriptor.  For each feature in the
+cluster, we compare the cluster's median value to the feature vector,
+producing a 64 dimension bit-string encoding each dimension's
+proximity to the median value.  This process results in what is
+referred to as a Hamming embedding of the feature vector, which
+requires 8 bytes of memory for each feature and allows for fast
+distance computation by simply taking the Hamming distance between two
+bit-strings belonging to the same cluster.  GIven a query image we
+compute the hamming embedding for each feature as was performed on the
+database images.  The distance between each query bit-string is
+computed against all database bit-strings in the nearest cluster to
+the query feature vector.  All features within a certain hamming
+distance cast a vote for their corresponding database image.  This
+look-up process uses an inverted file for each cluster which contains
+lines of bit-strings and their corresponding database image IDs.  The
+result is a histogram of image votes and we produce a ranked list of
+database images as compared to the query image.
+
+
+
+
 \subsection{Extracting Text}
 
 After collecting and indexing a large number of screenshots, we need
