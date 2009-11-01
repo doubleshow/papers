@@ -104,26 +104,25 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 \maketitle
 
 \begin{abstract}
-This paper provides a sample of a LaTeX document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings. It is an {\em alternate} style which produces
-a {\em tighter-looking} paper and was designed in response to
-concerns expressed, by authors, over page-budgets.
-It complements the document \textit{Author's (Alternate) Guide to
-Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
-This source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-The developers have tried to include every imaginable sort
-of ``bells and whistles", such as a subtitle, footnotes on
-title, subtitle and authors, as well as in the text, and
-every optional component (e.g. Acknowledgments, Additional
-Authors, Appendices), not to mention examples of
-equations, theorems, tables and figures.
-To make best use of this sample document, run it through \LaTeX\
-and BibTeX, and compare this source code with the printed
-output produced by the dvi file. A compiled PDF version
-is available on the web page to help you with the
-`look and feel'.
+Many online articles contain useful know-how knowledge about GUI
+applications and are richly illustrated by screenshots.  However, no
+system has been designed to take advantage of these screenshots to
+search this resource effectively.  In this paper, we present a novel
+system to index and search software know-how articles that levarages
+the visual correspondences between screenshots. To retrieve articles
+about an application, users can take a screenshot of the application
+to query the system and retrieve a list of articles containing a
+matching screenshot.  Useful snippets such as captions, references,
+and nearby text are automatically extracted from the retrieved
+articles and shown alongside with the thumbnails of the matching
+screenshots as excerpts for relevancy judgement. Retrieved articles
+are also ranked by a comprehensive set of visual, textual, and site
+features, whose weights are learned by RankSVM. Our prototype system
+currently contains 150k articles that are classified into walkthrough,
+book, gallry, and general categories. We demonstrated the system's
+ability to retrieve matching screenshots for a wide vareity of
+programs, across language boundaries, and provide subjectively more
+useful results than keyword-based search web and image searh engines.
 \end{abstract}
 
 % A category with only the three required fields
@@ -139,12 +138,12 @@ performance measures]
 
 \section{Introduction}
 
-There are a lot of resources on the Web about software
-applications. Users can learn to perform a wide variety of tasks from
-these resources such as how to set up a home network, back up files,
-or change the speed of the mouse cursor. These resources are often
-created and made available online by software developers who wish to
-maintain an online version of the documentation apart from the
+Many online articles contain useful know-how knowledege about GUI
+applications. Users can learn from these articles how to perform a
+wide variety of tasks, such as how to set up a home network, back up
+files, or change the speed of the mouse cursor. These resources are
+often created and made available online by software developers who
+wish to maintain an online version of the documentation apart from the
 built-in one in order to keep the content up-to-date (e.g.,
 support.microsoft.com). These resources are also created by
 unofficial, third-party experts, for example, by sites offering
@@ -203,10 +202,10 @@ online know-how articles about computer applications (Figure
 \ref{fig:main_result}).  These articles tend to be richly illustrated
 by screenshots of the applications discussed in the text. Our proposed
 system leverages this unique property and adopts a multi-modal
-approach to index and search these articles based on both visual and
-textual relevance.  It enables computer users to submit a screenshot
-of an application as the search term and to retrieve a list of
-relevant articles containing the screenshots of the same
+approach to indexing and searching these articles based on both visual
+and textual relevance.  It enables computer users to submit a
+screenshot of an application as the search term and to retrieve a list
+of relevant articles containing the screenshots of the same
 application.x In addition, it allows users to optionally specify a few
 keywords to search within these visually relevant articles for a
 subset regarding a specific topics.
@@ -225,12 +224,11 @@ internalization, this approach is \textbf{language independent} since
 it speaks the universal language of images and does not require
 users to translate technical terms.
 
-We make the following contributions:
+This paper reports on the two major contributions made by the current research:
 \begin{itemize}
-\item Propoased a multi-modal search engine for computer related articles.
+\item Propoased a multi-modal search engine for computer know-how articles.
 \item Built and evaluated a prototype system with more than 150K unique
 pages.
-
 \end{itemize}
 
 Road map
