@@ -295,34 +295,25 @@ text for searching computer-related articles.
 %game-based approach to college human assigned relevancy of landmark
 %images. Amazon mechanical turk. 
 
-In the current work, we used crowd-sourcing to train
-and evaluate the proposed system. 
-We used the crowd-sourcing serviced brokered by 
-Amazon Mechanical Turk (AMT), a vibrant micro-task
-market where people can be recruited to perform
-simple tasks with reasonable awards.
-which as been 
-AMT has recently been applied in many research works
-for the purpose of training and evaluation. 
-
-Kittur et al \cite{Kittur},
-experimented with AMT
-to perform user studies for collecting ratings of Wikipedia articles
-that match expert judgements.  In IR, Liu et al \cite{Liu} used AMT
-successfully to evaluated the system for predicting seeker
-satisfaction in online QA communities, and offer researchers with
-limited resources, like commercial entities, to conduct large-scale
-experiments.  They identified advantages, it is low cost and covers wider
-demographics than lab-based studies.  In computer vision, XXX used AMT
-to evaluate their results. However, as identified by \cite{Liu}, there
-are certain risks associated with this method such as getting
-dishonest answers unless tasks are formulated in such a way that the
-optimal strategy for workers is to perform the task in the honest
-manner. This has been a focus of some researchers in the IR
-community. For example, Kazai et al \cite{Kazai} proposed a social
-game based method for quality control of relevance assessment. In
-all of our applications of AMT, we built in validation 
-mechansisms to control quality.
+In the current work, we used crowd-sourcing to train and evaluate the
+proposed system.  We used the crowd-sourcing serviced brokered by
+Amazon Mechanical Turk (AMT), a vibrant micro-task market where people
+can be recruited to perform simple tasks for some small monetary
+awards. AMT has been applied in various research contexts for the
+purpose of training and evaluation. Kittur et al \cite{Kittur}
+reported success in recruiting workers from AMT to rate Wikipedia
+articles and achieved quality comparable to that by expert raters.
+Liu et al \cite{Liu} used AMT to evaluate their algorithm for
+predicting satisfication of answers in online QA
+communities. \cite{Vijayanarasimha} used AMT to label images for
+learning visual classifiers.  offers cost-effectivenss and the abitlit
+to cover a wider demographics than lab-based studies. However, as
+identified by \cite{Kittur}, there are certain risks associated with
+this method such as getting dishonest answers unless tasks are
+formulated in such a way that the optimal strategy for workers is to
+perform the task in the honest manner. Thus, in all of our
+applications of AMT, we built in validation mechansisms to control
+quality.
 
 \section{Building the database}
 
@@ -462,7 +453,8 @@ The offline database process is implemented using the Hadoop map/reduce \cite{Gh
 
 
 
-\subsection{Extracting Text}
+\subsection{Extracting Snippets}
+\label{sec:extracting_snippets}
 
 After collecting and indexing a large number of screenshots, we need
 to extract relevant text from the source articles of these
@@ -583,8 +575,8 @@ click, enter, type, and open. Third, walkthrough articles tend to
 include certain indicative terms such as the very word walkthrough,
 step, and guide. The gallery category consists of articles with many
 images but relative small amount of text. The general category covers
-all the unclassified article. Table \ref{} summarizes the 
-distribution of articles over the categories. 
+all the unclassified article. Table \ref{tbl:category_distribution}
+summarizes the distribution of articles over the categories.
 
 \begin{figure}
 \includegraphics[width=1\columnwidth]{figure/walkthrough_examples.png}
@@ -592,11 +584,9 @@ distribution of articles over the categories.
 \label{fig:example_walkthrough}
 \end{figure}
 
-About 28.7\% of articles are classified as walkthrough, while a
-small number of articles are classified as galleries (about 2.8\%).
-
 \begin{table}
-\centering \caption{Number of images in each category.} \label{}
+\centering \caption{Number of images in each category.}
+\label{tbl:category_distribution}
 
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -608,31 +598,31 @@ Total & 34,509 & 30,449 & 2,943 & 55,244\\
 (\%)  & 32.7 & 28.7 & 2.8 & 35.6 \\
 \hline
 \end{tabular}
+
 \end{table}
 
-\subsection{Statistics}
+%\subsection{Statistics}
 
-What are the websites hosting the most number of screenshots?
+%What are the websites hosting the most number of screenshots?
 
-What are the types of websites hosting useful screenshots?
+%What are the types of websites hosting useful screenshots?
 
 
 \section{Searching the database}
 
 \subsection{Specifying queries}
 
-Sikuli Search supports mixed-modality queries in order to optimize
-the effectiveness in searching technical articles about
-interactive programs. A typical query to Sikuli Search consists of
-a screenshot of a program and, optionally, a set of keywords to
-specify what aspects of the program the retrieved articles are
-supposed to cover.
+Our proposed search engine supports mixed-modality queries in order to
+optimize the effectiveness in searching technical articles about
+interactive programs. A typical query consists of a screenshot of a
+program and, optionally, a set of keywords to specify what aspects of
+the program the retrieved articles are supposed to cover.
 
 Screenshot queries can be specified in two ways. First, users can
 run a cross-platform, Java-based client interface we developed to
 capture the screenshot of a selected window or an arbitrary screen
 region. The client interface will submit the screenshot as the
-image query to Sikuli Search and display the search results in the
+image query to our search engine and display the search results in the
 default web browser. Alternatively, users can use any existing
 image capture utilities such as the snipping tool on Windows Vista
 or the Command-Shift+4 hotkey on Mac OS to capture screenshots.
@@ -648,7 +638,7 @@ results.
 \subsection{Finding similar images}
 
 
-\subsection{Ranking pages}
+\subsection{Ranking articles}
 
 Since our search application involves both images (i.e., screenshots)
 and text, we can not rank the articles in the search results based on
@@ -770,7 +760,7 @@ which will be explained in details next.
 
 \end{description}
 
-\subsubsection{Choosing feature weights}
+\subsubsection{Setting feature weights}
 
 Since not all features are equally important, it is necessary to
 choose a set of weights in order to reflect these features' relative
@@ -779,23 +769,24 @@ weights following the three steps described below.
 
 First, we apply RankSVM to learn feature weights based on the training
 data collected using Amazon Mechanical Turk. RankSVM was originally
-proposed by X to learn how to weight a set of features from orderings
-inferred from click-throughs. At the development stage, we did not
-have any click-through data to work with. Thus, we recruited workers
-from AMT to provide us explicit relevancy ratings from which to infer
-ordering constraints. We chose five query images known to have many
-good matches. We added four validation results.  Two results were
-known to be irrelevant; they were generated by randomly picking the
-results of other queries. Workers must identify them as
-irrelevant. The other two validation results are copies of other
-results in the set. Workers must provide consistent answers for
-both. In total, a worker rates the relevancy of 10 results on a
-5-point scale (0: completely useless, 5: very useful. From each task,
-we collected 6 new relevancy ratings. We generated an ordering
-constraint for each pair of ratings that differ by at least one. We
-obtained 600 ordering constraints from 50 unique tasks. Based on these
-constraints, we were able to apply RankSVM to learn appropriate feature
-weights. Also, at this stage, we do not have queries to work with.
+proposed by Joachims \cite{Joachims} to learn how to weight a set of
+features from orderings inferred from click-throughs. At the
+development stage, we did not have any click-through data to work
+with. Thus, we recruited workers from AMT to provide us explicit
+relevancy ratings from which to infer ordering constraints. We chose
+five query images known to have many good matches. We added four
+validation results.  Two results were known to be irrelevant; they
+were generated by randomly picking the results of other
+queries. Workers must identify them as irrelevant. The other two
+validation results are copies of other results in the set. Workers
+must provide consistent answers for both. In total, a worker rates the
+relevancy of 10 results on a 5-point scale (0: completely useless, 5:
+very useful. From each task, we collected 6 new relevancy ratings. We
+generated an ordering constraint for each pair of ratings that differ
+by at least one. We obtained 600 ordering constraints from 50 unique
+tasks. Based on these constraints, we were able to apply RankSVM to
+learn appropriate feature weights. Also, at this stage, we do not have
+queries to work with.
 
 Next, we set the weights of query dependent features based on the
 weights of corresponding query independent features. For example, if
@@ -833,56 +824,61 @@ there are several minor elements such as tags and actions that
 are dependent on the types of results.
 
 For the title element, we display the HTML title tags for web articles
-and the book titles for book pages. Users can click on the title to
+and the book titles for book pages. Markers are inserted
+to the beginning of the title to identify the categories (i.e.,
+walkthrough, book, or gallery). Users can click on the title to
 visit the website to read articles online or preview the content of
 the book pages (assuming the copyright issue has been resolved).
 
 For the excerpt element, we display the thumbnail of the matched
 screenshot as well as a composition of relevant text snippets
-extracted using the methods described in Section \ref{}. We insert a
-very tiny inline thumbnail (15 by 15 pixels) into each snippet in a
-way to reflect the type of the snippet. For a caption snippet, the
-tiny thumbnail is displayed above the snippet and centered.  For a
-reference snippet, any explicit figure label is replaced by the tiny
-thumbnail of the corresponding screenshot (i.e., as shown in Figure 2
--> as shown in IMAGE). For a nearby text snippet, the tiny thumbnail
-is displayed above or below depending on the image's relative
-position.
+extracted using the methods described in Section
+\ref{sec:extracting_snippets}. We insert a tiny inline thumbnail (15
+by 15 pixels) into each snippet in a way to reflect the snippet's
+type. For a caption snippet, the tiny thumbnail is displayed above the
+snippet and centered. For a reference snippet, any explicit figure
+label is replaced by the tiny thumbnail of the corresponding
+screenshot (i.e., as shown in Figure 2 $\rightarrow$ as shown in
+\includegraphics{figure/tiny.png}). For a nearby text snippet, the
+tiny thumbnail is displayed above or below depending on the image's
+relative position. If keywords are specified, their occurrences in the
+exceprt are highlighted.
 
+For the source element, we display the abbreviated url for web
+results and chapter/section headings for book results.
 
-thumbnail for quick visualization of the context. 
-
-If keywords are
-specified, their occurrences in the text are highlighted.
-
-For source, we display the abbreviated url for web results. The
-user can also view the cached version of the page in case the link
-is temporarily unavailable. This is very similar to typical web
-search. For book results, the source is the chapter/section
-headings. The user can also preview the content of the page,
-assuming the copyright issue has been resolved.
 
 \subsubsection{Faceted search}
 
-We use the Exhibit framework for displaying a list of results.
-Exhibit is a framework for web developers to create html pages
-with dynamic exhibits of data collections. The collections can be
-searched and browsed using faceted browsing of the search results,
-based on client-side Javascript. Users can filter the results by
-resource types, by sites, and/or by keywords. Results can also be
-grouped together. It provides pagination. Figure \ref{} shows the
-detailed view of the faceted search control.
+To help users browse search results more effectively, we provide a set
+of faceted search capabilities based on the Exhibit framework
+developed by Huynh et al \cite{Huynh}. Exhibit is a popular framework for
+creating dynamic exhibits of data collections and provides a rich set
+of faceted search functionatlies such as filter and timeline
+controls. Figure \ref{fig:main_result} shows the two faceted filtering
+control displayed at the left-side panel to allow users to filter the results
+based on categories and sites.
 
-We also generated TagClouds. Common words are shown in larger fonts
-Stop words are removed. Some interesting observations. First, what you
-can do with tend to be prominent keywords. Title of the program tend
-to be prominent keywords. These allow users to take a quick glance and
-get a good sense what the range of possible topics they can find
-online about this particular program. Figure \ref{} shows some
-examples of the tag clouds.
+We also display a tag cloud based on the snippets extracted from all
+the retrieved articles. Figure \ref{fig:tag_clouds} shows two examples
+of tag clouds.  The size of each tag indicates the number of articles
+this tag can be found.  Stop words and words with low article counts
+are removed. Tag cloud can help users in three ways. First, it
+provides users a quick overview of the range of topics covered by the
+retrieved articles.Second, the application name also appears in the
+cloud as prominant keywords, users can be more confident in the
+relevancy of the results. Third, by clicking on a tag, users can
+filter the results down to only those containing the tag.
+
+\begin{figure}
+\includegraphics[width=1\columnwidth]{figure/tag_clouds.png}
+\caption{Examples of tag clouds generated from the 
+results of two screenshot queries.}
+\label{fig:tag_clouds}
+\end{figure}
+
 
 \section{Evaluation}
-
 
 \subsection{Screenshot matching performance}
 
