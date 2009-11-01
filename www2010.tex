@@ -78,7 +78,7 @@
 \alignauthor Tom Yeh, Brandyn White, Larry Davis\\
        \affaddr{University of Maryland}\\
        \affaddr{College Park, MD, USA}\\
-       \email{\{tomyeh, bwhite, lsd\}@umd.edu}
+       \email{\{tomyeh, brandyn, lsd\}@umd.edu}
 %\alignauthor Brandyn White\\
 %       \affaddr{Institute for Clarity in Documentation}\\
 %       \affaddr{P.O. Box 1212}\\
@@ -140,13 +140,13 @@ performance measures]
 \section{Introduction}
 
 There are a lot of resources on the Web about software
-applications. Users can learn from these resources teach how to
-perform a wide variety of tasks such as setting up a home network,
-backing up files, or changing the speed of the mouse cursor. These
+applications. Users can learn to perform a wide variety of tasks from these resources
+such as how to set up a home network,
+back up files, or change the speed of the mouse cursor. These
 resources are often created and made available online by software
-developers themselves who wish to maintain an online version of
+developers who wish to maintain an online version of
 the documentation apart from the built-in one in order to keep the
-content always up-to-date (e.g., support.microsoft.com). These
+content up-to-date (e.g., support.microsoft.com). These
 resources are also created by unofficial, third-party experts, for
 example, by sites offering tutorials and tips on various software
 applications (e.g., osxfaq.com), by general-purpose \emph{how-to}
@@ -233,76 +233,76 @@ C: Use multi-modal search
 \section{Related Work}
 
 There has been a growing research interests in the indexing,
-searching, and organzing images on the web. Many researchers shared
+searching, and organizing images on the web. Many researchers shared
 their results in the recent WWW conferences.  Many classic IR problems
 have been revisited in a new context of images The Spam problem.
 Mehta et al \cite{Mehta} tackled spam that are images using visual
 features and near duplicate detection.  The result
-diversfication. Kennedy and Naaman \cite{Kennedy} focused on how to
-generate a divserse and represenative search results fo landmark
-images. van Leuken et al \cite{vanLeuken} also dealt with diverse
+diversification. Kennedy and Naaman \cite{Kennedy} focused on how to
+generate diverse and representative search results for landmark
+images. Van Leuken et al \cite{vanLeuken} also dealt with diverse
 image search results based on visual clustering. Some dealt with
 organizing photos. The ranking problem. Jing and Baluja \cite{Jing}
-tried to improe the ranking of product images using PageRank.  The
+tried to improve the ranking of product images using PageRank.  The
 relevancy judgement problem. Arase et al \cite{Arase} proposed a
 game-based approach to college human assigned relevancy of landmark
-images. Li et al \cite{Li} focused on imporving the relevance
+images. Li et al \cite{Li} focused on improving the relevance
 judgement of web search results with image excerpts, identifying the
-dominant image in a page and displyaing it in the excerpt.  Authority
-identification problem. Lempel and Soffer \cite{Lempel} built a image
-retrieval system; by analysing link structure, they determine whether
-an image is coming from an authoritive source without using any visual
+dominant image in a page and displaying it in the excerpt.  Authority
+identification problem. Lempel and Soffer \cite{Lempel} built an image
+retrieval system; by analyzing link structure, they determine whether
+an image is came from an authoritative source without using visual
 information.  Crandall et al \cite{Crandall} proposed a technique of
 organizing a large dataset of geotagged photos using visual, textual,
-and temporal features. In relation to these works, ours depend on
-state-of-the-art visual analsis techniques to index and search
+and temporal features. In relation to these works, ours depends on
+state-of-the-art visual analysis techniques to index and search
 images. But unlike these works, rather than the end, searching images
 is a mean to the goal of finding useful information.
 
 Growing interests in cross language. Tanaka-Ishii and Nakagawa
 \cite{Tanaka-Ishii} built a usage consultation tool for language
-learner to engage in multi-lingual search to find the usage of any
+learners to engage in multi-lingual search to find the usage of any
 string of words. Scholl et al \cite{Scholl} explored ways to recognize
 web genres in a language independent manner based on structure of HTML
 markup. Ni et al \cite{Ni} seek ways to analyze and organize Web
-information written in different languages, mininig multilingual
-topics from Wikipedia. In relation to these works, the current work
-offers another interesting possiblity---searching based on the
-univesal visual language of screenshots.
+information written in different languages, mining multilingual
+topics from Wikipedia. In relation to these works, this work
+offers another interesting possibility---searching based on the
+universal visual language of screenshots.
 
-There is also focus on helping comptuer users. Medhi et al \cite{Medhi}
+There is also focus on helping computer users. Medhi et al \cite{Medhi}
 studied the optimal way of presenting audio-visual know-how knowledge to
 novice computer users.
 
-Several works have been presented to enablge users to search in more
-than one modalities. Narayan et al \cite{Narayan} studied multi-modal
+Several works have been presented to enable users to search in more
+than one modality. Narayan et al \cite{Narayan} studied multi-modal
 interfaces for mobile devices for accessing web information through a 
-personalized dialog based interaction basedon speech and text. 
+personalized dialog based interaction based on speech and text. 
 Dowman et al \cite{Dowman} studied the problem of indexing and
-searching radio and televiton news using speech recognition transcript and text
-and meta data of the web pages containg related news. Our multi-modal
-search is to use image and keywords with faceted search capabilties.
+searching radio and television news using speech recognition transcripts
+and meta data of the web pages containing related news. Our multi-modal
+search is to use image and keywords with faceted search capabilities.
 
 Amazon mechanical turk. In several components of the current work, we
-applied AMT for bot training and testing.  Recently, many works have
+applied AMT for both training and testing.  Recently, many works have
 used AMT for labeling training images and for evaluating
-systems. Kittur et al \cite{Kittur} experimented the capabiliy of AMT
-to perform user stuides for collecting ratings of Wikipedia articles
+systems. Kittur et al \cite{Kittur} experimented with AMT
+to perform user studies for collecting ratings of Wikipedia articles
 that match expert judgements.  In IR, Liu et al \cite{Liu} used AMT
 successfully to evaluated the system for predicting seeker
-satisfcation in online QA communicties, and offer researchers without
-lots of resources like commercial entities to conduct large-scale
-experiments.  They identified advantages, low cost and covers a wide
-demographics than lab-based studies.  In comptuer vision, XXX used AMT
+satisfaction in online QA communities, and offer researchers with
+limited resources, like commercial entities, to conduct large-scale
+experiments.  They identified advantages, it is low cost and covers wider
+demographics than lab-based studies.  In computer vision, XXX used AMT
 to evaluate their results. However, as identified by \cite{Liu}, there
-are certain risks associted with this method.  risks of getting
-dishonest answers unless tasks are forumlated in such a way that the
+are certain risks associated with this method such as getting
+dishonest answers unless tasks are formulated in such a way that the
 optimal strategy for workers is to perform the task in the honest
 manner. This has been a focus of some researchers in the IR
 community. For example, Kazai et al \cite{Kazai} proposed a social
 game based method for quality control of relevance assessment. In
 all of our applications of AMT, we built in validation 
-mechansism to control quality.
+mechansisms to control quality.
 
 \section{Building the database}
 
@@ -326,22 +326,22 @@ keywords from title bars of the dialog windows of various computer
 programs. Some examples of these keywords are properties,
 preferences, option, settings, wizard, custom, installation,
 network, sound, keyboard ....etc. We turned on the filter feature
-to keep only illustration and graphics, rejecting obviously
+to keep only illustrations and graphics, rejecting obviously
 non-screenshot images such as images of faces and natural scenes.
 Using this method, we collected a total of 100,000 images, about
 80\% of them are screenshots of computer programs.
 
 Second, we used TinEye, a reverse image search engine that can
-take an image as the query and return a list of URLs to nearly
-identical copies of the image found on the Web for copyright
-infringement. We manually captured screenshot images of more than
+take an image as the query and return a list of URLs of nearly
+identical copies of the image found on the Web used primarily for copyright
+infringement detection. We manually captured screenshot images of more than
 300 interactive windows of popular programs across three of the
-most popular OS platforms (XP, Vita, and Mac OS). These images
+most popular OS platforms (XP, Vista, and Mac OS). These images
 were submitted to TinEye to obtain about 5,000 images. Since the
 visual similarity matching performed by TinEye is very precise,
 all of these images are screenshot images.
 
-Third, we collected a library of 102 electronic books on popular
+Third, we collected a library of 102 electronic books of popular
 software programs. We extracted all the image figures embedded in
 the electronic file (i.e., Pdf documents). About x\% of these
 figures are screenshots. This method gave us about 50,000 images.
@@ -352,9 +352,9 @@ relevant to any program at all. TinEye is able to provide visually
 relevant images. But these images are ranked only by visual
 relevancy; the page containing the highest ranked image may not
 necessarily contain any useful information. Computer books are
-professionally edited and thus containing the highest quality
-text. But they cover a relatively limited range of applications
-and their contents are less up-to-date compared to the Web. By
+professionally edited and thus contain the highest quality
+text; however, they cover a relatively limited range of applications
+and their content isn't as current as compared to the Web. By
 using all these methods, we hope to create a rich repository of
 technical information that is both visually and textually relevant
 to and accessible by general computer users.
@@ -389,16 +389,6 @@ to and accessible by general computer users.
 
 
 \subsection{Indexing images}
-Challenges are:
-1. There are a lot of screenshot images.
-2. There are different sizes.
-3. Some of them are cropped.
-4. Some of them are superimposed on a larger image.
-5. Some of the components may be rearranged. For example,
-in system prefrences, the icons may have shifted.
-
-Exaplin how using hamming embedding and related techniques can
-help us deal with each of these challenges.
 
 \subsection{Finding similar images}
 Our image search task can be categorized as a content-based image
@@ -409,7 +399,7 @@ ill-defined as each problem domain imposes requirements on what
 aspects of the image are relevant for retrieval.  For example, when
 searching for photos of a particular person, we may largely ignore the
 scene while focusing on detecting and recognizing faces; however, if
-our goal is to collect photos taken in front of national landmarks, we
+our goal is to collect photos taken at national landmarks, we
 would place our focus on the background (for a recent survey on CBIR
 methods see \cite{Datta1348248}).
 
@@ -434,23 +424,23 @@ web figures.
 
 Our solution to these problems is to model visually descriptive
 regions of the image individually.  This allows for spatial variations
-and considerable performance gains as only visually relevant regions
-of the image are processed.  The images are converted to gray to
+and substantial performance gains as only visually relevant regions
+of the image are considered.  The images are converted to gray to
 reduce common color theme variations and the differences between gray
 and color images often found in PC help books and websites
 respectively.  To achieve scale, rotation, and illumination
 invariance, we use the SURF feature point detector and descriptor
 \cite{VanGool1370556} to find and describe regions of interest.  The
 SURF descriptor produces a 64 dimensional feature vector for each
-feature point found and for our purposes the spatial coordinates and
+feature point found and, for our purposes, the spatial coordinates and
 scale of the features are neglected.
 
 Given a list of feature vectors for each image in our database, our
-aim is to produce a fast image comparison system.  A potential method
+aim is to produce a fast image comparison system.  A possible solution
 is to store all of the feature vectors for all images, and given a
 query image cast a vote for each database image that has a feature
-within some euclidean distance to a query image feature; however, this
-method would require a substantial amount of memory necessary to allow
+within some Euclidean distance to a query image feature; however, this
+method would require a substantial amount of memory to allow
 for fast comparison.  Moreover, every query feature would be compared
 to every database feature, preventing real-time performance on even
 modestly sized databases.  To combat this problem, we use the method
@@ -462,21 +452,21 @@ the 64 dimensions in the SURF descriptor.  For each feature in the
 cluster, we compare the cluster's median value to the feature vector,
 producing a 64 dimension bit-string encoding each dimension's
 proximity to the median value.  This process results in what is
-referred to as a Hamming embedding of the feature vector, which
-requires 8 bytes of memory for each feature (from 256 bytes for the floating point vector) and allows for fast
+referred to as a Hamming Embedding of the feature vector, which
+requires 8 bytes of memory for each feature (compared to 256 bytes for the floating point vector) and allows for fast
 distance computation by simply taking the Hamming distance between two
-bit-strings belonging to the same cluster.  GIven a query image we
-compute the hamming embedding for each feature as was performed on the
+bit-strings belonging to the same cluster.  Given a query image we
+compute the Hamming Embedding for each feature as was performed on the
 database images.  The distance between each query bit-string is
 computed against all database bit-strings in the nearest cluster to
-the query feature vector.  All features within a certain hamming
+the query feature vector.  All features within a certain Hamming
 distance cast a vote for their corresponding database image.  This
 look-up process uses an inverted file for each cluster which contains
 lines of bit-strings and their corresponding database image IDs.  The
-result is a histogram of image votes and we produce a ranked list of
+result is a histogram of image votes from which we produce a ranked list of
 database images as compared to the query image.
 
-The offline database process is implemented using the Hadoop map/reduce \cite{Ghemaqat1327492} implementation that allow the computation to scale with the database size.  The entire feature computation and indexing procedure for a 150,000 image database takes under two hours on a cluster of six High-CPU Amazon EC2 instances.  Image retrieval times for each query image when $k=1,000$, where $k$ is the number of clusters, is .0053 seconds per query feature (approximately 100 features per image) and when $k=10,000$ it is 0.0015 seconds per query feature; however, the former has more image votes due to the decrease in features per cluster as $k$ increases.
+The offline database process is implemented using the Hadoop map/reduce \cite{Ghemaqat1327492} implementation to allow the computation to scale with the database size.  The entire feature computation and indexing procedure for our 150,000 image database takes under two hours on a cluster of six High-CPU Amazon EC2 instances.  Image retrieval times for each query image when $k=1,000$, where $k$ is the number of clusters, is .0053 seconds per query feature (approximately 100 features per image) and when $k=10,000$ it is 0.0015 seconds per query feature; however, the latter has fewer image votes due to the decrease in features per cluster as $k$ increases.
 
 
 
@@ -498,7 +488,7 @@ the content in the screenshot and learn nothing new from reading the
 content again in the snippet. Note that this is in sharp contrast with
 typical image search engines that actually favor snippets describing
 image contents in order to index and search images. Below we list N
-types of informative snippets we extract for the purpose of our 
+types of informative snippets that we extract for the purpose of our 
 search application:
 
 \begin{description}
@@ -506,17 +496,17 @@ search application:
 \item[Title] We extract the text in the Title tag from the HTML
   header. For book, we simply use its title.
 
-\item[Heading] Compard to title, heading provides more specific
+\item[Heading] Compared to the title, headings provides more specific
   information regarding the topic of an article containing a
-  screenshot. Heading is especially useful when there are multiple
+  screenshot. Headings are especially useful when there are multiple
   screenshots contained in the same article. For web articles, we
-  extract the heading tag (e.g., h1,h2) cloeset to and proceeding each
+  extract the heading tag (e.g., h1, h2) closest to and proceeding each
   screenshot. For book articles, we extract the chapter and section
   headings from the outline metadata stored in the PDF file whenever
   such metadata is available.
 
 \item[Alt Text] An image's ALT tag provides information redundancy in
-  case when the image fails to be displayed. The text attrbute of an
+  cases where the image fails to be displayed. The text attribute of an
   ALT tag is often a useful feature for a keyword-based image search
   engine to index and search images. Based on our observation, the Alt
   text of the screenshot of a program (e.g., System Preferences) tends
@@ -571,7 +561,7 @@ search application:
 
 \item[Nearby Text] If none of the above useful excerpt phrases can be
   extracted, we simply extract nearby sentences around the image and
-  use it as the exceprt.
+  use it as the excerpt.
 
 %% \item[Figure OCR] Useful text are those the user does not already
 %% know. Text that can also be found in the figure is not as useful.
@@ -591,12 +581,12 @@ structures, and contents.  In the current work, we consider four
 categories: book, walkthrough, gallery, and general. The book category
 consists of those articles extracted from pdf books. The walkthrough
 category includes articles giving step-by-step instructions on how to
-perform certain computing tasks such as backuping files and changing
+perform certain computing tasks such as backing up files and changing
 display resolution. Figure \ref{fig:example_walkthrough} shows some
 examples of walkthrough articles. These walkthrough articles tend to
 possess three features that can help us identify them. First, they
 tend to contain an ordered or unordered list of instructions in short
-sentences interpersed with screenshot illustrations.  Second, these
+sentences interspersed with screenshot illustrations.  Second, these
 sentences tend to begin with common interactive action verbs such as
 click, enter, type, and open. Third, walkthrough articles tend to
 include certain indicative terms such as the very word walkthrough,
@@ -695,7 +685,7 @@ which will be explained in details next.
   the same image or a version with it superimposed on another
   image. In some cases the users may still find them useful; there is
   no reason to reject them completely. Hence, we derive a visual
-  similarity feature by noramlizing the the score by the highest score
+  similarity feature by normalizing the the score by the highest score
   in the result set.
 
 \item[Resize ratio] When a screenshot image of a program is captured
@@ -766,7 +756,7 @@ which will be explained in details next.
 
 \item[Authority] Some sites may be trusted by users more for its
   technical contents. We identified a list of potential sites users
-  may find authoriative, including sites hosted by software vendors
+  may find authoritative, including sites hosted by software vendors
   such as Microsoft and Apple and sited dedicated to know-how
   knowledge such as HowTo.com and ExpertVillsage.com. We derived a
   binary feature for each site.
@@ -798,13 +788,13 @@ weights following the three steps described below.
 
 First, we apply RankSVM to learn feature weights based on the training
 data collected using Amazon Mechanical Turk. RankSVM was originally
-proposed by X to learn how to weight a set sof features from orderings
+proposed by X to learn how to weight a set of features from orderings
 inferred from click-throughs. At the development stage, we did not
 have any click-through data to work with. Thus, we recruited workers
 from AMT to provide us explicit relevancy ratings from which to infer
-ordering contraints. We chose five query images known to have many
+ordering constraints. We chose five query images known to have many
 good matches. We added four validation results.  Two results were
-known to be irrelevant; they were geneated by randomly picking the
+known to be irrelevant; they were generated by randomly picking the
 results of other queries. Workers must identify them as
 irrelevant. The other two validation results are copies of other
 results in the set. Workers must provide consistent answers for
@@ -813,7 +803,7 @@ both. In total, a worker rates the relevancy of 10 results on a
 we collected 6 new relevancy ratings. We generated an ordering
 constraint for each pair of ratings that differ by at least one. We
 obtained 600 ordering constraints from 50 unique tasks. Based on these
-contraints, we were able to apply RankSVM to learn appropriate feature
+constraints, we were able to apply RankSVM to learn appropriate feature
 weights. Also, at this stage, we do not have queries to work with.
 
 Next, we set the weights of query dependent features based on the
@@ -844,7 +834,7 @@ refine the weights by applying RankSvm.
 
 To display a list of search results, we adopt a presentation scheme 
 modeled after that of a typical search engine in order to 
-leverge users' existing familarity with such scheme.  Figure
+leverage users' existing familiarity with such scheme.  Figure
 \ref{result_example} shows a typical presentation of a single
 result. This presentation consists of three main elements: title,
 excerpt, and source, that are common for all result types. In addition
@@ -856,14 +846,14 @@ and the book titles for book pages. Users can click on the title to
 visit the website to read articles online or preview the content of
 the book pages (assuming the copyright issue has been resolved).
 
-For the exceprt element, we display the thumbnail of the matched
+For the excerpt element, we display the thumbnail of the matched
 screenshot as well as a composition of relevant text snippets
 extracted using the methods described in Section \ref{}. We insert a
 very tiny inline thumbnail (15 by 15 pixels) into each snippet in a
 way to reflect the type of the snippet. For a caption snippet, the
 tiny thumbnail is displayed above the snippet and centered.  For a
 reference snippet, any explicit figure label is replaced by the tiny
-thumbanil of the corresponding screenshot (i.e., as shown in Figure 2
+thumbnail of the corresponding screenshot (i.e., as shown in Figure 2
 -> as shown in IMAGE). For a nearby text snippet, the tiny thumbnail
 is displayed above or below depending on the image's relative
 position.
@@ -892,9 +882,9 @@ resource types, by sites, and/or by keywords. Results can also be
 grouped together. It provides pagination. Figure \ref{} shows the
 detailed view of the faceted search control.
 
-We also generated TagClouds. Commond words are shown in larger fonts
-Stop words are removed. Some interesting obseravtions. First, what you
-can do with tend ot be prominent keywords. Ttitle of the program tend
+We also generated TagClouds. Common words are shown in larger fonts
+Stop words are removed. Some interesting observations. First, what you
+can do with tend to be prominent keywords. Title of the program tend
 to be prominent keywords. These allow users to take a quick glance and
 get a good sense what the range of possible topics they can find
 online about this particular program. Figure \ref{} shows some
@@ -937,8 +927,8 @@ experiments.}
 \subsection{Compare to keyword search}
 
 In this experiment, we compared the proposed multi-modal search engine
-to two keyword search baselines. The first baseline is a commerical
-web search engine.  The second baseline is a commerical image search
+to two keyword search baselines. The first baseline is a commercial
+web search engine.  The second baseline is a commercial image search
 engine. We were interested in whether users would judge the search
 results returned by these three systems differently in terms of
 perceived relevancy. We recruited workers from Amazon Mechanical Turk
@@ -963,7 +953,7 @@ accepted the ratings given by workers who rated the validation
 articles accurately, which was checked by (1) whether irrelevant
 articles were rated as irrelevant and (2) whether duplicate articles
 were rated consistently. The presence of validation checks
-ensure that the optiaml strategies for the workers is to
+ensure that the optimal strategies for the workers is to
 provide answer in an honest manner.
 
 In total, we obtained X unique ratings from Y workers. The 
@@ -971,7 +961,7 @@ approval rate was Z. Table X summarizes our findings.
 
 \subsection{Bilingual search}
 
-In this experment, we examined the ability of our system to search
+In this experiment, we examined the ability of our system to search
 across language boundaries. We took screenshots of 15 representative
 programs on Mac in five languages (Spanish, French, German,
 Chinese, and Korean) and obtained a total of 75 test
