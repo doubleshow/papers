@@ -406,21 +406,37 @@ help us deal with each of these challenges.
 
 \subsection{Extracting Text}
 
-A table summarize what features are applicable to which data type.
-
-Give a real example of each type of text.
+After collecting and indexing a large number of screenshots, we need
+to extract relevant text from the source articles of these
+screenshots. The objective of text extraction is to identify snippets
+in an article that can highlight and/or give hints about the kinds of
+knowledge users can expect to obtain if they read the article. For
+example, for an article containing a screenshot of the network
+configuration program, a good snippet would be ``set IP address'' or
+``enable wireless network'' since it clearly indicates to users the
+article is likely to explain how to perform these tasks. On the other
+hand, a snippet such as ``network configuration'' that describes the
+screenshot's content is less useful to users since they already see
+the content in the screenshot and learn nothing new from reading the
+content again in the snippet. Note that this is in sharp contrast with
+typical image search engines that actually favor snippets describing
+image contents in order to index and search images. Below we list N
+types of informative snippets we extract for the purpose of our 
+search application:
 
 \begin{description}
 
-\item[Title] We also extract the text in the Title tag from
-the HTML header. For book, we simply use its title.
+\item[Title] We extract the text in the Title tag from the HTML
+  header. For book, we simply use its title.
 
-\item[Heading] Some web page may contain multiple figures
-illustrating different parts and provide heading for each part.
-This heading can be more specific than the page title. However, to
-extracting section headings reliably is harder for books in pdf
-format. Some PDFs have outlines. We can extract the nearest
-chapter or section heading.
+\item[Heading] Compard to title, heading provides more specific
+  information regarding the topic of an article containing a
+  screenshot. Heading is especially useful when there are multiple
+  screenshots contained in the same article. For web articles, we
+  extract the heading tag (e.g., h1,h2) cloeset to and proceeding each
+  screenshot. For book articles, we extract the chapter and section
+  headings from the outline metadata stored in the PDF file whenever
+  such metadata is available.
 
 \item[Alt Text] An image's ALT tag provides information redundancy in
   case when the image fails to be displayed. The text attrbute of an
@@ -490,28 +506,32 @@ chapter or section heading.
 
 \end{description}
 
-\subsection{Adding Content Type Tags}
+\subsection{Classifying articles into categories}
 
-There are several distinct and useful types of resources in our
-application domain. We want to automatically tag them by type. In
-the current work, we consider four categories: book, walkthrough,
-gallery, and general. Book categories are those articles extracted
-from pdf books. Walkthrough on articles that give step-by-step
-instructions of how to perform certain computing tasks. These
-articles tend to have an ordered or unordered list of action
-items. And between two action items, there are screenshot images
-included to provide illustration. Also, they tend to have many
-sentences that begin with common interactive action verbs such as
-click, enter, type, and open. There can also be explicit mentions
-of the the word step, walkthrough, or guide. Gallery are those
-articles with many images but relative less amount of text. All
-the rest of the articles not classified into the above three
-categories go into the general categories.
-
+In addition to extracting useful text from articles, we can also
+classify them into distinct categories based on their origins,
+structures, and contents.  In the current work, we consider four
+categories: book, walkthrough, gallery, and general. The book category
+consists of those articles extracted from pdf books. The walkthrough
+category includes articles giving step-by-step instructions on how to
+perform certain computing tasks such as backuping files and changing
+display resolution. Figure \ref{fig:example_walkthrough} shows some
+examples of walkthrough articles. These walkthrough articles tend to
+possess three features that can help us identify them. First, they
+tend to contain an ordered or unordered list of instructions in short
+sentences interpersed with screenshot illustrations.  Second, these
+sentences tend to begin with common interactive action verbs such as
+click, enter, type, and open. Third, walkthrough articles tend to
+include certain indicative terms such as the very word walkthrough,
+step, and guide. The gallery category consists of articles with many
+images but relative small amount of text. The general category covers
+all the unclassified article. Table \ref{} summarizes the 
+distribution of articles over the categories. 
 
 \begin{figure}
 \includegraphics[width=1\columnwidth]{figure/walkthrough_examples.png}
 \caption{Examples of articles providing step-by-step walkthroughs.}
+\label{fig:example_walkthrough}
 \end{figure}
 
 About 28.7\% of articles are classified as walkthrough, while a
@@ -531,20 +551,6 @@ Total & 34,509 & 30,449 & 2,943 & 55,244\\
 \hline
 \end{tabular}
 \end{table}
-
-
-We classify each page based on several features. For blogs, we
-look for keywords in the URLs such as blog, wordpress ...etc. For
-official docs, we look for company names in the URLs such as
-microsoft, apple, adobe. For tutorials, we look for words such as
-"tutorial", "how to" ...etc and urls of well-known sites such as
-howto.com or answer.com. For forums, we analyze the page structure
-and identify features related to discussion such as threads,
-reply, and table formatting.
-
-It is possible for a page to be assigned multiple tags. For
-example, someone can write a tutorial on his blog. Then, the page
-can have two tags.
 
 \subsection{Statistics}
 
@@ -578,77 +584,73 @@ Search and view the results directly.
 Keywords queries are optional and can be specified in three ways.
 They can be entered together with the screenshot queries on both
 the client and Web interfaces. Also, as the users are browsing the
-results, they can enter keywords to filter and/or fine the
+results, they can enter keywords to filter and/or refine the
 results.
-
-
 
 \subsection{Finding similar images}
 
 
 \subsection{Ranking pages}
 
-If it's a image search application, results would be ranked purely
-by visual similarity. But if we do that pages without any useful
-text but happen to have the right image may be ranked at the top.
-Similarity, if it's a text search application, they would be
-ranked by text relevancy. But if we do that, pages with lots of
-useful text but with the wrong image may be mistakenly ranked at
-the top. Since our application is a mixed modality search
-application, we can not rank the results solely on either modality
-alone. A new ranking scheme based on a comprehensive set of
-features is needed. We identified N features to be important for
-determining the relevancy of each page for the purpose of ranking.
-The features can be divided into three types: visual features,
-text features, and site features.
+Since our search application involves both images (i.e., screenshots)
+and text, we can not rank the articles in the search results based on
+either modality alone. If ranking is based only on visual similairty,
+as in the case of a typical content-based image search engine, even
+though the highest ranked article may contain the right screenshot,
+there is no indication whether the article also contain any useful
+text. Similarly, if ranking is based only on text, as in the case of a
+typical keyword search engine, despite having all the keywords, an
+article may still be useless if it contains the wrong
+screenshot. Therefore, a new ranking scheme based on a comprehensive
+set of multimodal features needs to be developed. These features can
+be roughly classified into three types: visul, text, and sitefeatures,
+which will be explained in details next.
 
 \subsubsection{Visual Features}
 
 \begin{description}
 
-\item[Similarity] If the image is not similar at all, it's
-unlikely the page text would contain anything useful. However, the
-current image matching method is very precise. We can almost
-assume the images returned are always correct. Images with lower
-scores may be cropped versions of the screenshot. But while they
-are relevant, they may be less useful since it is harder for users
-to tell instantly which parts of the interactive window this
-cropped screenshot is covering.
+\item[Similarity] In our system, visual similarity is the most
+  dominant feature. To users, an article with a visually dissimilar
+  screenshot is a sure sign that the article is about the wrong
+  program and should be ranked lower. However, images with lower
+  visual similar scores can simply mean they are a cropped version of
+  the same image or a version with it superimposed on another
+  image. In some cases the users may still find them useful; there is
+  no reason to reject them completely. Hence, we derive a visual
+  similarity feature by noramlizing the the score by the highest score
+  in the result set.
 
-\item[Resize ratio]
+\item[Resize ratio] When a screenshot image of a program is captured
+  and included in an article, it is often resized to dimensions that
+  are most suitable for reading. The ratio by which an image is
+  resized provides a cue as to the image's role. For example, an image
+  subject to a high resize ratio may suggest that it is displayed as a
+  thumbnail to provide just enough details for identification, whereas
+  a moderately resized image may suggest the desire to preserve more
+  details for users to actually read its content. The resize ratio of
+  can be computed as the ratio of the captured size (off the desktop
+  screen) and the embedded size (in a Web or book page). The captured
+  size can be derived simply from the size of the query image. For
+  images extracted from PDF books, the size information is often
+  readily available. For Web images, the embedded size is often
+  contained in the width and height fields of the <img> tag. In the
+  absence of these fields, the size can be extracted from the header
+  of the image file. We sampled a number of websites with good
+  screenshots and computed the average resize ratios as the standard.
+  Then, given an arbitrary screenshot, we can calculate a normalized
+  score based on how close it is to the standard.
 
-When a screenshot image of a program is captured and included in
-an article, it is often resized to dimensions that are most
-suitable for reading. The ratio by which an image is resized
-provides a cue as to the image's role. For example, an image
-subject to a high resize ratio may suggest that it is displayed as
-a thumbnail to provide just enough details for identification,
-whereas a moderately resized image may suggest the desire to
-preserve more details for users to actually read its content. The
-resize ratio of can be computed as the ratio of the captured size
-(off the desktop screen) and the embedded size (in a Web or book
-page). The captured size can be derived simply from the size of
-the query image. For images extracted in PDF pages, the size
-information is readily available. For Web images, the embedded
-size is often contained in the width and height fields of the
-<img> tag. In the absence of these fields, the size can be
-extracted from the header of the image file. We took a number of
-good screenshot web images, compute their average and standard
-deviation. We assign 3 to images within 1 std around the average,
-2 within 2, and 1 outside of 2std.
+\item[Position] If an image occupies a prominent position in an
+  article, it is likely to be important. As a result, the article may
+  dedicate more text to the image and should be ranked higher.  We
+  consider three positions to be prominent: first, center, and
+  last. We can compute three distinct position scores as the
+  normalized distances to each of the three prominent positions.
 
-
-\item[Position]
-
-If the image occupies the prominent position on the page, it's
-more likely to be something important. Image positions may not be
-easy to compute. Perhaps we can consider ordering. Is it the first
-image, or the second image?
-
-\item[Number of coexisting images] the fewer other images
-a page has, the more likely the information on the page will be
-about the image. This count has to exclude images that are not
-screenshots.
+\item[Number of coexisting images] The fewer other images a page has,
+  the more likely the information on the page will be about the
+  image. This count has to exclude images that are not screenshots.
 
 \end{description}
 
@@ -656,28 +658,28 @@ screenshots.
 
 \begin{description}
 
+\item[Snippet] If an article contains image related snippets such as
+  captions, references, and nearby text, it is likely to be more
+  relevant to the image. We derive a binary feature for each type of
+  snippet to indicate whether the snippet can be identified in the
+  article.
 
-\item[Search terms]
-If the page contains more keywords relevant to those supplied by
-the users, the page should ranked higher. We check each location
-whether or not a search term can be found. The locations we
-consider are: title, caption, nearby text, referring sentences,
-same page, one page apart, two pages apart. It can be represented
-as a vector of integers, where each integer indicates the number
-of search terms found at that location. Each term is then
-inversely weighted by its global frequency, reducing the weight of
-very common words. When there's no search term given, this does
-not have any effect.
+\item[Category] When it comes to technical information, articles in
+  some categories may be preferred than others and should be ranked
+  higher accordingly. Currently, we consider four categories:
+  walkthrough, gallery, general, and book, and derive a binary feature
+  for each category.
 
-
-\item[Amount]
-The more text a page has, the more information users can get.
-
-\item[Special text]
-Whether or not each of the N kinds of special text labels can be
-found on the page. Can we find a caption for this image on the
-page? Can we find a clear reference to this image on the page?
-Does this page have a title?
+\item[Search terms] If an article contains more search terms, it is
+  likely to be more relevant and should be ranked higher. We check
+  whether search terms can be found in the title and in each image
+  related snippet. Then, we check whether the search terms can be
+  found in the same page. The score is computed as the ratio between
+  the number of search terms found and the total number of search
+  terms. Then, for matched search term on the page, this score is
+  inversely weighted by the word distance to the image. Also, each
+  term is inversely weighted by its global frequency in order to favor
+  less common terms over very common terms.
 
 \end{description}
 
@@ -685,31 +687,28 @@ Does this page have a title?
 
 \begin{description}
 
-\item[Type]
+\item[Authority] Some sites may be trusted by users more for its
+  technical contents. We identified a list of potential sites users
+  may find authoriative, including sites hosted by software vendors
+  such as Microsoft and Apple and sited dedicated to know-how
+  knowledge such as HowTo.com and ExpertVillsage.com. We derived a
+  binary feature for each site.
 
-Is it a blog, tutorial, or forum, or from book. It is possible the
-world as a whole may favor one type of resources over the other.
-We estimate their relative important in the following order:
-official doc, tutorial, blog, and forum.
+\item[Quantity] Some sites may contain relatively more screenshots,
+  which may suggest their stronger dedication to technical contents
+  involving screenshots.  We counted the number of unique screenshots
+  collected from each domain and rank all the domains by this
+  number. We then used the percentile in the ranking to compute a
+  numerical feature between 0 and 1.
 
-\item[Authority]
+%% \item[Quality]
 
-If an image is from Microsoft, it's more likely to contain useful
-information. Number of other images on the site: if a site hosts a
-lot of screenshot images, it's probably hosting the images for
-some good purposes and those images are more likely to be useful.
-Also, maybe some books are more trusted by users than the other
-books. We find the top 10 domains with the most number of
-screenshots and designate each domain as a binary feature.
-
-\item[Quality]
-
-If screenshot images hosted by a site have been consistently
-judged by users to be accompanied by high-quality text, it's more
-likely new screen images found on this site will also be
-accompanied by high-quality text. Initially, we do not have any of
-this information. We assume images on all websites have equal
-quality. Average ranking score of the site.
+%% If screenshot images hosted by a site have been consistently
+%% judged by users to be accompanied by high-quality text, it's more
+%% likely new screen images found on this site will also be
+%% accompanied by high-quality text. Initially, we do not have any of
+%% this information. We assume images on all websites have equal
+%% quality. Average ranking score of the site.
 
 \end{description}
 
@@ -717,28 +716,28 @@ quality. Average ranking score of the site.
 
 Since not all features are equally important, it is necessary to
 choose a set of weights in order to reflect these features' relative
-importance. In our prototype system, we chose weights in three steps.
+importance. In developing the prototype of our system, we set the
+weights following the three steps described below.
 
-First, we apply RankSVM to learn weights for query independent
-weights.  We used Amazon Mechnical Turk to collect training
-data. RankSVM was originally proposed by X to learn how to weight a
-set sof features from orderings inferred from click-throughs. At the
-development stage, we did not have any click-through data to work
-with. Thus, we recruited workers from AMT to provide us explicit
-relevancy ratings from which to infer ordering contraints. We chose
-five query images known to have many good matches. We added four
-validation results.  Two results were known to be irrelevant; they
-were geneated by randomly picking the results of other
-queries. Workers must identify them as irrelevant. The other two
-validation results are copies of other results in the set. Workers
-must provide consistent answers for both. In total, a worker rates the
-relevancy of 10 results on a 5-point scale (0: completely useless, 5:
-very useful. From each task, we collected 6 new relevancy ratings. We
-generated an ordering constraint for each pair of ratings that differ
-by at least one. We obtained 600 ordering constraints from 50 unique
-tasks. Based on these contraints, we were able to apply RankSVM to
-learn appropriate feature weights. Also, at this stage, we do not have
-queries to work with.
+First, we apply RankSVM to learn feature weights based on the training
+data collected using Amazon Mechanical Turk. RankSVM was originally
+proposed by X to learn how to weight a set sof features from orderings
+inferred from click-throughs. At the development stage, we did not
+have any click-through data to work with. Thus, we recruited workers
+from AMT to provide us explicit relevancy ratings from which to infer
+ordering contraints. We chose five query images known to have many
+good matches. We added four validation results.  Two results were
+known to be irrelevant; they were geneated by randomly picking the
+results of other queries. Workers must identify them as
+irrelevant. The other two validation results are copies of other
+results in the set. Workers must provide consistent answers for
+both. In total, a worker rates the relevancy of 10 results on a
+5-point scale (0: completely useless, 5: very useful. From each task,
+we collected 6 new relevancy ratings. We generated an ordering
+constraint for each pair of ratings that differ by at least one. We
+obtained 600 ordering constraints from 50 unique tasks. Based on these
+contraints, we were able to apply RankSVM to learn appropriate feature
+weights. Also, at this stage, we do not have queries to work with.
 
 Next, we set the weights of query dependent features based on the
 weights of corresponding query independent features. For example, if
@@ -753,45 +752,49 @@ refine the weights by applying RankSvm.
 
 \subsection{Presenting the results}
 
-New presentation scheme is needed for our purpose. In text search,
-the keywords are highlighted, and displayed in the context of the
-text before and after them. In image search, only the caption,
-url, and dimensions are displayed. Users pay attention to images
-to judge visual relevancy. Also, they pay attention to the url to
-judge authority. In Tineye search (reverse image search), the
-matched images are shown as thumbnails, grouped by "exact copies",
-and ordered by visual similarity. The back links to the pages
-where matched images are found are also displayed. All these are
-not suitable for our purpose.
+%% New presentation scheme is needed for our purpose. In text search,
+%% the keywords are highlighted, and displayed in the context of the
+%% text before and after them. In image search, only the caption,
+%% url, and dimensions are displayed. Users pay attention to images
+%% to judge visual relevancy. Also, they pay attention to the url to
+%% judge authority. In Tineye search (reverse image search), the
+%% matched images are shown as thumbnails, grouped by "exact copies",
+%% and ordered by visual similarity. The back links to the pages
+%% where matched images are found are also displayed. All these are
+%% not suitable for our purpose.
 
-\subsubsection{Exceprt}
+%% \subsubsection{Result}
 
-should not be a big departure from the design of exisrting search
-engines, so we can leverage the users' familarity.
+To display a list of search results, we adopt a presentation scheme 
+modeled after that of a typical search engine in order to 
+leverge users' existing familarity with such scheme.  Figure
+\ref{result_example} shows a typical presentation of a single
+result. This presentation consists of three main elements: title,
+excerpt, and source, that are common for all result types. In addition
+there are several minor elements such as tags and actions that
+are dependent on the types of results.
 
-Figure shows the detail view of how a result is typically
-displayed. The design is very similar to how search results are
-typically displayed by popular commercial search engines to
-leverage the the familiarity users already have. It has three main
-fields: title, description, and source. In
-addition, a new field relevant to our application is the The
-thumbnail image next to each result.
+For the title element, we display the HTML title tags for web articles
+and the book titles for book pages. Users can click on the title to
+visit the website to read articles online or preview the content of
+the book pages (assuming the copyright issue has been resolved).
 
-For title, for web page results, we extract the title tag from the
-HTML header. Clicking on the title will bring the user to the page
-where the figure is located at. For book results, the title is the
-title of the book. Clicking on the title will bring the user to
-the book store where the book can be purchased. The resource type
-tag is displayed in front of the title.
+For the exceprt element, we display the thumbnail of the matched
+screenshot as well as a composition of relevant text snippets
+extracted using the methods described in Section \ref{}. We insert a
+very tiny inline thumbnail (15 by 15 pixels) into each snippet in a
+way to reflect the type of the snippet. For a caption snippet, the
+tiny thumbnail is displayed above the snippet and centered.  For a
+reference snippet, any explicit figure label is replaced by the tiny
+thumbanil of the corresponding screenshot (i.e., as shown in Figure 2
+-> as shown in IMAGE). For a nearby text snippet, the tiny thumbnail
+is displayed above or below depending on the image's relative
+position.
 
-For description, we generate a paragraph based on the set of relevant
-phrases extracted by the methods described in Section \ref{}. We limit
-the size of the paragraph to at most 30 words and not exceeding two
-lines of text . The type of resource is clearly marked. The context in
-which the figure appears in the text is visually represented. The user
-can quickly read the text above or below the image. The explicitly
-references such as \emph{As shown in Figure ()} is replaced by a
-thumbnail for quick visualization of the context. If keywords are
+
+thumbnail for quick visualization of the context. 
+
+If keywords are
 specified, their occurrences in the text are highlighted.
 
 For source, we display the abbreviated url for web results. The
@@ -826,22 +829,22 @@ examples of the tag clouds.
 \subsection{Screenshot matching performance}
 
 In this experiment, we evaluated the core functionality of our system:
-matching screenshot images of computer programs. We created a test set
-of 100 unique images that cover three major operating systems (Windows
-XP, Windows Vista, and Mac OS X) and several popular programs such as
-Microsoft Office, Firefox, and Skype. Figure \ref{fig:query_examples}
-shows a number of screenshot examples.  We evaluated among the
-returned images, how many of them are correct. We used AMT to evaluate
-the result. Each result is independently reviewed by as least two
-workers. We only ask them to rate at most top 10. For some screenshot
-queries, the returned results can be fewer than 10. To prevent the
-Turkers from cheating, we mixed in one image known to be a match (the
-query image itself) and two images known to be mismatch (two other
-query images). The results are shuffled. This setup ensures that the
-optimal strategy for the workers is to perform tasks honestly. Turker
-marks each image in the result as match or mismatch. The assignment is
-approved only if the Turker also correctly identified the ground truth
-items.
+the ability to search for similar screenshot images.  We created a
+test set of 100 unique images that cover three major operating systems
+(Windows XP, Windows Vista, and Mac OS X) and several popular programs
+such as Microsoft Office, Firefox, and Skype. Figure
+\ref{fig:query_examples} shows a number of screenshot examples.  We
+evaluated among the returned images, how many of them are correct. We
+used AMT to evaluate the result. Each result is independently reviewed
+by as least two workers. We only ask them to rate at most top 10. For
+some screenshot queries, the returned results can be fewer than 10. To
+prevent the Turkers from cheating, we mixed in one image known to be a
+match (the query image itself) and two images known to be mismatch
+(two other query images). The results are shuffled. This setup ensures
+that the optimal strategy for the workers is to perform tasks
+honestly. Turker marks each image in the result as match or
+mismatch. The assignment is approved only if the Turker also correctly
+identified the ground truth items.
 
 We received X answers. Y of them are approved. The approval rate
 was X.
