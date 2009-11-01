@@ -94,10 +94,10 @@
        \affaddr{Cambridge, MA, USA}\\
        \email{boris@mit.edu}
 }
-\additionalauthors{Additional authors: John Smith (The Th{\o}rv\"{a}ld Group,
-email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
-(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
-\date{30 July 1999}
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv\"{a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+%\date{30 July 1999}
 %\begin{figure*}[t]
 %\includegraphics[width=2\columnwidth]{authors.png}
 %\end{figure*}
@@ -105,10 +105,10 @@ email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
 
 \begin{abstract}
 Many online articles contain useful know-how knowledge about GUI
-applications and are richly illustrated by screenshots.  However, no
+applications that are richly illustrated by screenshots.  However, no
 system has been designed to take advantage of these screenshots to
-search this resource effectively.  In this paper, we present a novel
-system to index and search software know-how articles that levarages
+visually search this resource effectively.  In this paper, we present a novel
+system to index and search software know-how articles that leverages
 the visual correspondences between screenshots. To retrieve articles
 about an application, users can take a screenshot of the application
 to query the system and retrieve a list of articles containing a
@@ -119,10 +119,10 @@ screenshots as excerpts for relevancy judgement. Retrieved articles
 are also ranked by a comprehensive set of visual, textual, and site
 features, whose weights are learned by RankSVM. Our prototype system
 currently contains 150k articles that are classified into walkthrough,
-book, gallry, and general categories. We demonstrated the system's
-ability to retrieve matching screenshots for a wide vareity of
+book, gallery, and general categories. We demonstrated the system's
+ability to retrieve matching screenshots for a wide variety of
 programs, across language boundaries, and provide subjectively more
-useful results than keyword-based search web and image searh engines.
+useful results than keyword-based search web and image search engines.
 \end{abstract}
 
 % A category with only the three required fields
@@ -138,13 +138,12 @@ performance measures]
 
 \section{Introduction}
 
-Many online articles contain useful know-how knowledege about GUI
+Many online articles contain useful know-how knowledge about GUI
 applications. Users can learn from these articles how to perform a
 wide variety of tasks, such as how to set up a home network, back up
 files, or change the speed of the mouse cursor. These resources are
 often created and made available online by software developers who
-wish to maintain an online version of the documentation apart from the
-built-in one in order to keep the content up-to-date (e.g.,
+wish to maintain an online version of the documentation in order to keep the content up-to-date (e.g.,
 support.microsoft.com). These resources are also created by
 unofficial, third-party experts, for example, by sites offering
 tutorials and tips on various software applications (e.g.,
@@ -152,8 +151,8 @@ osxfaq.com), by general-purpose \emph{how-to} sites (e.g., eHow.com)
 featuring software tutorials as one of the topics, and by computer
 book publishers who wish to make their books accessible online via
 subscription (e.g., safaribooksonline.com). Even more resources can be
-found in user-generated contents, for example, in blogs where bloggers
-share their experiences and tips using the software application, in
+found in user-generated content, for example, in blogs where bloggers
+share their experiences and tips using a software application, in
 discussion boards where people can discuss and learn from each other
 about software, and in QA communities such as Yahoo Answers where
 members can raise question and get answers back from other members.
@@ -183,7 +182,7 @@ Chinese-speaking person fluent in English may be able to retrieve
 useful articles on dogs in both languages using the English or
 Chinese word for \emph{dog} as the search term. But when it comes
 to technical terms such as \emph{system preferences}, the same
-person may be confined to only Chinese articles since it is not
+person may be confined to only Chinese articles since it may not be
 obvious how to translate these terms into English.
 
 %(The ranking in this example has been artificially adjusted in
@@ -206,9 +205,9 @@ approach to indexing and searching these articles based on both visual
 and textual relevance.  It enables computer users to submit a
 screenshot of an application as the search term and to retrieve a list
 of relevant articles containing the screenshots of the same
-application.x In addition, it allows users to optionally specify a few
+application. In addition, it allows users to optionally specify a few
 keywords to search within these visually relevant articles for a
-subset regarding a specific topics.
+subset regarding a specific topic.
 
 Our approach offers several advantages. In terms of usability, this
 approach is \textbf{direct and intuitive}. Users only need to capture a
@@ -226,7 +225,7 @@ users to translate technical terms.
 
 This paper reports on the two major contributions made by the current research:
 \begin{itemize}
-\item Propoased a multi-modal search engine for computer know-how articles.
+\item Proposed a multi-modal search engine for computer know-how articles.
 \item Built and evaluated a prototype system with more than 150K unique
 pages.
 \end{itemize}
@@ -238,28 +237,28 @@ Road map
 There has been a growing research interest in the problem of indexing,
 searching, and organizing images on the web.  Many classic problems
 originated from text search have been revisited in the new context of
-images. For exmaple, Jing and Baluja \cite{Jing} tackled the ranking
+images. For example, Jing and Baluja \cite{Jing} tackled the ranking
 problem in the context of searching product images using PageRank.
 Kennedy and Naaman \cite{Kennedy} and Van Leuken et al
-\cite{vanLeuken} both examined the problem of result diversfication in
+\cite{vanLeuken} both examined the problem of result diversification in
 the context of image search; the former considered a specialized case
 of landmark images, whereas the latter considered a more general case
 involving a wider range of topics such as animals and cars. Lempel and
-Soffer \cite{Lempel} dealth with the problem of authority
-identification for web images by analyzing the link strcutures of the
+Soffer \cite{Lempel} dealt with the problem of authority
+identification for web images by analyzing the link structures of the
 source pages.  Mehta et al \cite{Mehta} presented a solution to the
 problem of spam detection for web images; they analyzed visual
 features and looked for duplicate images in suspiciously large
 quantities as potential spam.  Li et al \cite{Li} considered the
-problem of relevance judgement and demonstrated the abilitiy of image
+problem of relevance judgement and demonstrated the ability of image
 excerpts (dominant image + snippets) to help users judge results
 faster. Crandall et al \cite{Crandall} took on the challenge of
 organizing a large dataset in the setting of tens of millions of
 geotagged images, taking a comprehensive approach involving visual,
 textual, and temporal features. Similar to these existing works, the
-current work relies on several state-of-the-art computer algorithm in
+current work relies on several state-of-the-art computer algorithms in
 order to index and search screenshots effectively. But unlike them,
-the current work finds similar images only as an intermmediate step
+the current work finds similar images only as an intermediate step
 toward the ultimate goal of returning relevant text to the users.
 
 In response to accelerated globalization, there have been research
@@ -271,16 +270,16 @@ explored ways to analyze and organize Web information written in
 different languages by mining multilingual topics from
 Wikipedia. Tanaka-Ishii and Nakagawa \cite{Tanaka-Ishii} developed a
 tool for language learners to perform multilingual search to find
-usage of foreign langugaes. In relation to research efforts,
+usage of foreign languages. In relation to research efforts,
 the current work offers yet another interesting and promising
-possiblity---searching based on the universal
+possibility---searching based on the universal
 visual language of screenshots.
 
 In terms of the application domain, the work closest to ours is that
 of Medhi et al \cite{Medhi} who examined the optimal way to present
 audio-visual know-how knowledge to novice computer users.  In terms of
 search modality, there have been several previous works aimed to
-provide users with mulitple search modalities instead of just
+provide users with multiple search modalities instead of just
 keywords. For example, Narayan et al \cite{Narayan} developed a
 multi-modal mobile interface combining speech and text for accessing
 web information through a personalized dialog.  Dowman et al
@@ -296,7 +295,7 @@ text for searching computer-related articles.
 In the current work, we used crowd-sourcing to train and evaluate the
 proposed system.  We used the crowd-sourcing serviced brokered by
 Amazon Mechanical Turk (AMT), a vibrant micro-task market where people
-can be recruited to perform simple tasks for some small monetary
+can be recruited to perform simple tasks for small monetary
 awards. AMT has been applied in various research contexts for the
 purpose of training and evaluation. Kittur et al \cite{Kittur}
 reported success in recruiting workers from AMT to rate Wikipedia
@@ -304,13 +303,13 @@ articles and achieved quality comparable to that by expert raters.
 Liu et al \cite{Liu} used AMT to evaluate their algorithm for
 predicting satisfication of answers in online QA
 communities. \cite{Vijayanarasimha} used AMT to label images for
-learning visual classifiers.  offers cost-effectivenss and the abitlit
-to cover a wider demographics than lab-based studies. However, as
+learning visual classifiers.  AMT offers cost-effectiveness and the ability
+to cover wider demographics than lab-based studies. However, as
 identified by \cite{Kittur}, there are certain risks associated with
-this method such as getting dishonest answers unless tasks are
-formulated in such a way that the optimal strategy for workers is to
-perform the task in the honest manner. Thus, in all of our
-applications of AMT, we built in validation mechansisms to control
+this method such as getting dishonest answers, which can be prevented by
+formulating the problem in such a way that the optimal strategy for workers is to
+perform the task in an honest manner. Thus, in all of our
+applications of AMT, we built in validation mechanisms to control
 quality.
 
 \section{Building the database}
@@ -341,8 +340,8 @@ Using this method, we collected a total of 100,000 images, about
 80\% of them are screenshots of computer programs.
 
 Second, we used TinEye, a reverse image search engine that can
-take an image as the query and return a list of URLs of nearly
-identical copies of the image found on the Web used primarily for copyright
+take an image as the query and return a list of URLs to nearly
+identical copies of the image found on the Web; it is designed primarily for copyright
 infringement detection. We manually captured screenshot images of more than
 300 interactive windows of popular programs across three of the
 most popular OS platforms (XP, Vista, and Mac OS). These images
@@ -353,20 +352,20 @@ all of these images are screenshot images.
 Third, we collected a library of 102 electronic books of popular
 software programs. We extracted all the image figures embedded in
 the electronic file (i.e., Pdf documents). About x\% of these
-figures are screenshots. This method gave us about 50,000 images.
+figures are screenshots. This method produced about 50,000 images.
 
 Each method has its own pros and cons. While Bing Image Search
 provides the best variety of images, many of them are not visually
 relevant to any program at all. TinEye is able to provide visually
-relevant images. But these images are ranked only by visual
+relevant images, but these images are ranked only by visual
 relevancy; the page containing the highest ranked image may not
 necessarily contain any useful information. Computer books are
 professionally edited and thus contain the highest quality
 text; however, they cover a relatively limited range of applications
 and their content isn't as current as compared to the Web. By
-using all these methods, we hope to create a rich repository of
+using all of these methods, we hope to create a rich repository of
 technical information that is both visually and textually relevant
-to and accessible by general computer users.
+to, and accessible by, general computer users.
  
 \subsection{Indexing images}
 
@@ -417,8 +416,8 @@ scale of the features are neglected.
 
 Given a list of feature vectors for each image in our database, our
 aim is to produce a fast image comparison system.  A possible solution
-is to store all of the feature vectors for all images, and given a
-query image cast a vote for each database image that has a feature
+is to store all of the feature vectors for all images and, given a
+query image, cast a vote for each database image that has a feature
 within some Euclidean distance to a query image feature; however, this
 method would require a substantial amount of memory to allow
 for fast comparison.  Moreover, every query feature would be compared
@@ -455,8 +454,7 @@ The offline database process is implemented using the Hadoop map/reduce \cite{Gh
 \label{sec:extracting_snippets}
 
 After collecting and indexing a large number of screenshots, we need
-to extract relevant text from the source articles of these
-screenshots. The objective of text extraction is to identify snippets
+to extract relevant text from their source articles. The objective of text extraction is to identify snippets
 in an article that can highlight and/or give hints about the kinds of
 knowledge users can expect to obtain if they read the article. For
 example, for an article containing a screenshot of the network
@@ -475,7 +473,7 @@ search application:
 \begin{description}
 
 \item[Title] We extract the text in the Title tag from the HTML
-  header. For book, we simply use its title.
+  header. For a book, we simply use its title.
 
 \item[Heading] Compared to the title, headings provides more specific
   information regarding the topic of an article containing a
@@ -490,10 +488,10 @@ search application:
   cases where the image fails to be displayed. The text attribute of an
   ALT tag is often a useful feature for a keyword-based image search
   engine to index and search images. Based on our observation, the Alt
-  text of the screenshot of a program (e.g., System Preferences) tends
-  to be the title of the program (e.g., Alt=``system preferences'').
+  text of the screenshot of a program (e.g., Alt=``system preferences'') tends
+  to be the title of the program (e.g., System Preferences).
   Thus, such text may not provide any additional information other
-  than what the users can already read directly on the computer
+  than what the users can already read directly on their computer
   screen. Yet, we expect Alt text can still be helpful in
   strengthening users' confidence in a search result, by checking
   whether both the program's screenshot and title appear in the
@@ -509,14 +507,14 @@ search application:
   not explicitly labeled by the word Figure. Thus, we identify
   potential caption text based on two simple heuristics: (1) is it
   immediately above or below the image and (2) does it have a
-  different style from those of surrounding paragraphs.
+  different style as compared to surrounding paragraphs.
 
 \item[References] Sometimes references to images can be found in
-  sentences relatively away from the images. Some references are based
+  sentences relatively far away from the images. Some references are based
   on explicit labels, such as the phrase \emph{as shown in Figure
-    X}. Some references are based on layout relationships, such as
-  such as the phrase \emph{see below}. Sentences containing such
-  references are likely to relevant to the images they refer
+    X}. Other references are based on layout relationships, such as 
+  the phrase \emph{see below}. Sentences containing such
+  references are likely to be relevant to the images they refer
   to. Presented in the excerpt, these sentences may indicate the types
   of knowledge users can expect to learn if they read the whole
   article. To resolve a label-based reference, we look for the image
@@ -528,11 +526,11 @@ search application:
   below) until an image is found. After resolving the reference, a
   link between the referred image and the referring sentence is
   established. Whenever an image is retrieved, sentences referring to
-  it can also be retrieved to be included in the excerpt.
+  it can also be retrieved for inclusion in the excerpt.
 
-\item[Action Phrases] Since one of the anticipated uses of our systems
+\item[Action Phrases] Since one of the anticipated uses of our system
   is to learn how to perform interactive actions using a particular
-  program, phrases containing certain action keywords can potentially
+  program, phrases containing certain action keywords can
   be useful. For examples, phrases containing keywords such as
   configure, click, and open, may indicate to the users that the
   article are likely to explain what can be configured, what should be
@@ -570,10 +568,10 @@ tend to contain an ordered or unordered list of instructions in short
 sentences interspersed with screenshot illustrations.  Second, these
 sentences tend to begin with common interactive action verbs such as
 click, enter, type, and open. Third, walkthrough articles tend to
-include certain indicative terms such as the very word walkthrough,
+include certain indicative terms such as walkthrough,
 step, and guide. The gallery category consists of articles with many
 images but relative small amount of text. The general category covers
-all the unclassified article. Table \ref{tbl:category_distribution}
+all of the unclassified articles. Table \ref{tbl:category_distribution}
 summarizes the distribution of articles over the categories.
 
 \begin{figure}
@@ -617,7 +615,7 @@ program and, optionally, a set of keywords to specify what aspects of
 the program the retrieved articles are supposed to cover.
 
 Screenshot queries can be specified in two ways. First, users can
-run a cross-platform, Java-based client interface we developed to
+run a cross-platform, Java-based, client interface we developed to
 capture the screenshot of a selected window or an arbitrary screen
 region. The client interface will submit the screenshot as the
 image query to our search engine and display the search results in the
@@ -640,7 +638,7 @@ results.
 
 Since our search application involves both images (i.e., screenshots)
 and text, we can not rank the articles in the search results based on
-either modality alone. If ranking is based only on visual similairty,
+either modality alone. If ranking is based only on visual similarity,
 as in the case of a typical content-based image search engine, even
 though the highest ranked article may contain the right screenshot,
 there is no indication whether the article also contain any useful
@@ -649,8 +647,8 @@ typical keyword search engine, despite having all the keywords, an
 article may still be useless if it contains the wrong
 screenshot. Therefore, a new ranking scheme based on a comprehensive
 set of multimodal features needs to be developed. These features can
-be roughly classified into three types: visul, text, and sitefeatures,
-which will be explained in details next.
+be roughly classified into three types: visual, text, and site,
+which will be explained in detail next.
 
 \subsubsection{Visual Features}
 
@@ -674,13 +672,13 @@ which will be explained in details next.
   subject to a high resize ratio may suggest that it is displayed as a
   thumbnail to provide just enough details for identification, whereas
   a moderately resized image may suggest the desire to preserve more
-  details for users to actually read its content. The resize ratio of
+  details for users to actually read its content. The resize ratio
   can be computed as the ratio of the captured size (off the desktop
   screen) and the embedded size (in a Web or book page). The captured
   size can be derived simply from the size of the query image. For
   images extracted from PDF books, the size information is often
   readily available. For Web images, the embedded size is often
-  contained in the width and height fields of the <img> tag. In the
+  contained in the width and height fields of the \texttt{<img>} tag. In the
   absence of these fields, the size can be extracted from the header
   of the image file. We sampled a number of websites with good
   screenshots and computed the average resize ratios as the standard.
@@ -694,9 +692,9 @@ which will be explained in details next.
   last. We can compute three distinct position scores as the
   normalized distances to each of the three prominent positions.
 
-\item[Number of coexisting images] The fewer other images a page has,
+\item[Number of coexisting images] The fewer unrelated images a page has,
   the more likely the information on the page will be about the
-  image. This count has to exclude images that are not screenshots.
+  matching image. This count has to exclude images that are not screenshots.
 
 \end{description}
 
@@ -711,7 +709,7 @@ which will be explained in details next.
   article.
 
 \item[Category] When it comes to technical information, articles in
-  some categories may be preferred than others and should be ranked
+  some categories may be preferred over others and should be ranked
   higher accordingly. Currently, we consider four categories:
   walkthrough, gallery, general, and book, and derive a binary feature
   for each category.
@@ -722,8 +720,8 @@ which will be explained in details next.
   related snippet. Then, we check whether the search terms can be
   found in the same page. The score is computed as the ratio between
   the number of search terms found and the total number of search
-  terms. Then, for matched search term on the page, this score is
-  inversely weighted by the word distance to the image. Also, each
+  terms. Then, for matched search terms on the page, this score is
+  inversely weighted by their distance to the image. Also, each
   term is inversely weighted by its global frequency in order to favor
   less common terms over very common terms.
 
@@ -733,11 +731,11 @@ which will be explained in details next.
 
 \begin{description}
 
-\item[Authority] Some sites may be trusted by users more for its
-  technical contents. We identified a list of potential sites users
+\item[Authority] Some sites may be trusted by users more for their
+  technical content. We identified a list of sites users
   may find authoritative, including sites hosted by software vendors
-  such as Microsoft and Apple and sited dedicated to know-how
-  knowledge such as HowTo.com and ExpertVillsage.com. We derived a
+  such as Microsoft and Apple and those dedicated to know-how
+  knowledge such as HowTo.com and ExpertVillage.com. We derived a
   binary feature for each site.
 
 \item[Quantity] Some sites may contain relatively more screenshots,
@@ -823,10 +821,10 @@ are dependent on the types of results.
 
 For the title element, we display the HTML title tags for web articles
 and the book titles for book pages. Markers are inserted
-to the beginning of the title to identify the categories (i.e.,
+at the beginning of the title to identify the categories (i.e.,
 walkthrough, book, or gallery). Users can click on the title to
 visit the website to read articles online or preview the content of
-the book pages (assuming the copyright issue has been resolved).
+the book pages (assuming the copyright issues have been resolved).
 
 For the excerpt element, we display the thumbnail of the matched
 screenshot as well as a composition of relevant text snippets
@@ -840,7 +838,7 @@ screenshot (i.e., as shown in Figure 2 $\rightarrow$ as shown in
 \includegraphics{figure/tiny.png}). For a nearby text snippet, the
 tiny thumbnail is displayed above or below depending on the image's
 relative position. If keywords are specified, their occurrences in the
-exceprt are highlighted.
+excerpt are highlighted.
 
 For the source element, we display the abbreviated url for web
 results and chapter/section headings for book results.
@@ -861,10 +859,10 @@ We also display a tag cloud based on the snippets extracted from all
 the retrieved articles. Figure \ref{fig:tag_clouds} shows two examples
 of tag clouds.  The size of each tag indicates the number of articles
 this tag can be found.  Stop words and words with low article counts
-are removed. Tag cloud can help users in three ways. First, it
-provides users a quick overview of the range of topics covered by the
-retrieved articles.Second, the application name also appears in the
-cloud as prominant keywords, users can be more confident in the
+are removed. The tag cloud can help users in three ways. First, it
+provides users with a quick overview of the range of topics covered by the
+retrieved articles.  Second, the application name also appears in the
+cloud as prominent keywords, users can be more confident in the
 relevancy of the results. Third, by clicking on a tag, users can
 filter the results down to only those containing the tag.
 
@@ -888,13 +886,13 @@ such as Microsoft Office, Firefox, and Skype. Figure
 \ref{fig:query_examples} shows a number of screenshot examples.  We
 evaluated among the returned images, how many of them are correct. We
 used AMT to evaluate the result. Each result is independently reviewed
-by as least two workers. We only ask them to rate at most top 10. For
+by as least two workers. We only ask them to rate at most the top 10. For
 some screenshot queries, the returned results can be fewer than 10. To
 prevent the Turkers from cheating, we mixed in one image known to be a
-match (the query image itself) and two images known to be mismatch
+match (the query image itself) and two images known to be a mismatch
 (two other query images). The results are shuffled. This setup ensures
 that the optimal strategy for the workers is to perform tasks
-honestly. Turker marks each image in the result as match or
+honestly. The Turker marks each image in the result as match or
 mismatch. The assignment is approved only if the Turker also correctly
 identified the ground truth items.
 
@@ -939,7 +937,7 @@ articles accurately, which was checked by (1) whether irrelevant
 articles were rated as irrelevant and (2) whether duplicate articles
 were rated consistently. The presence of validation checks
 ensure that the optimal strategies for the workers is to
-provide answer in an honest manner.
+provide answers in an honest manner.
 
 In total, we obtained X unique ratings from Y workers. The 
 approval rate was Z. Table X summarizes our findings. 
