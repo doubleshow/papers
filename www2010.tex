@@ -140,26 +140,24 @@ performance measures]
 \section{Introduction}
 
 There are a lot of resources on the Web about software
-applications. Users can learn to perform a wide variety of tasks from these resources
-such as how to set up a home network,
-back up files, or change the speed of the mouse cursor. These
-resources are often created and made available online by software
-developers who wish to maintain an online version of
-the documentation apart from the built-in one in order to keep the
-content up-to-date (e.g., support.microsoft.com). These
-resources are also created by unofficial, third-party experts, for
-example, by sites offering tutorials and tips on various software
-applications (e.g., osxfaq.com), by general-purpose \emph{how-to}
-sites (e.g., eHow.com) featuring software tutorials as one of the
-topics, and by computer book publishers who wish to make their
-books accessible online via subscription (e.g.,
-safaribooksonline.com). Even more resources can be found in
-user-generated contents, for example, in blogs where bloggers
-share their experiences and tips using the software application,
-in discussion boards where people can discuss and learn from each
-other about software, and in QA communities such as Yahoo Answers
-where members can raise question and get answers back from other
-members.
+applications. Users can learn to perform a wide variety of tasks from
+these resources such as how to set up a home network, back up files,
+or change the speed of the mouse cursor. These resources are often
+created and made available online by software developers who wish to
+maintain an online version of the documentation apart from the
+built-in one in order to keep the content up-to-date (e.g.,
+support.microsoft.com). These resources are also created by
+unofficial, third-party experts, for example, by sites offering
+tutorials and tips on various software applications (e.g.,
+osxfaq.com), by general-purpose \emph{how-to} sites (e.g., eHow.com)
+featuring software tutorials as one of the topics, and by computer
+book publishers who wish to make their books accessible online via
+subscription (e.g., safaribooksonline.com). Even more resources can be
+found in user-generated contents, for example, in blogs where bloggers
+share their experiences and tips using the software application, in
+discussion boards where people can discuss and learn from each other
+about software, and in QA communities such as Yahoo Answers where
+members can raise question and get answers back from other members.
 
 However, for some users, searching this valuable resource
 effectively can be challenging. For example, suppose a user opens
@@ -189,104 +187,126 @@ to technical terms such as \emph{system preferences}, the same
 person may be confined to only Chinese articles since it is not
 obvious how to translate these terms into English.
 
-separating entities and topics
-
-%Users often rely on the names displayed on the interface to
-%describe keywords. Many non-English speaking users use localized
-%software in their native language. They can read and understand
-%English well or use a machine translator such as Babel to help
-%them understand. While translating common terms is easy,
-%translating technical interface names is hard, making the
-%English-language resources inaccessible to these international
-%users.
-
-
-(The ranking in this example has been artificially adjusted in
-order to illustrate a rich variety of results.)
+%(The ranking in this example has been artificially adjusted in
+%order to illustrate a rich variety of results.)
 
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/main_result.png}
+\caption{Searching articles about computer programs using
+their screenshots. This is an example of a typical
+result page}
+\label{fig:main_result}
 \end{figure*}
 
-%One possibility is to choose the words at the title of the window
-%as keywords. The user also needs to specify what a
-%
-%* Need to type many keywords. Most cases copy and paste is not supported.
-%* Ambiguity: how to do X with Y? But keywords are all the same.
-%* Hard to judge the relevancy.
-%* Sometimes in a long document with multiple steps, it's unclear
-%where in the document is relevant to the current screen.
-%* can not search cross langauge (bi-lingual who may be familiar
-%with the terms in one language but can read the explanation in two
-%languages equally well)
+In this paper, we present a novel system for indexing and searching
+online know-how articles about computer applications (Figure
+\ref{fig:main_result}).  These articles tend to be richly illustrated
+by screenshots of the applications discussed in the text. Our proposed
+system leverages this unique property and adopts a multi-modal
+approach to index and search these articles based on both visual and
+textual relevance.  It enables computer users to submit a screenshot
+of an application as the search term and to retrieve a list of
+relevant articles containing the screenshots of the same
+application.x In addition, it allows users to optionally specify a few
+keywords to search within these visually relevant articles for a
+subset regarding a specific topics.
 
-C: Use multi-modal search
-    Brief system demo
-        walk through a search scenario
-        showoff the scale
-    Explain how each limitation is overcome
-    List of contributions
-        Propose a new large-scale search system
-        Evaluate it
-    Road map
+Our approach offers several advantages. In terms of usability, this
+approach is \textbf{direct and intuitive}. Users only need to capture a
+screenshot of an application to form a query, which is less cumbersome
+than entering several keywords to describe the application. In terms
+of the separation between context and topic, this approach is
+\textbf{unambiguous} since each search modality serves a well-defined
+role (i.e., context $\rightarrow$ screenshot, topic
+$\rightarrow$ keywords). In terms of relevancy judgement, this approach 
+is \textbf{cognitively simple}, by reducing the judgement task from
+reading text snippets to viewing images.  Finally, in terms of
+internalization, this approach is \textbf{language independent} since
+it speaks the universal language of images and does not require
+users to translate technical terms.
+
+We make the following contributions:
+\begin{itemize}
+\item Propoased a multi-modal search engine for computer related articles.
+\item Built and evaluated a prototype system with more than 150K unique
+pages.
+
+\end{itemize}
+
+Road map
 
 \section{Related Work}
 
-There has been a growing research interests in the indexing,
-searching, and organizing images on the web. Many researchers shared
-their results in the recent WWW conferences.  Many classic IR problems
-have been revisited in a new context of images The Spam problem.
-Mehta et al \cite{Mehta} tackled spam that are images using visual
-features and near duplicate detection.  The result
-diversification. Kennedy and Naaman \cite{Kennedy} focused on how to
-generate diverse and representative search results for landmark
-images. Van Leuken et al \cite{vanLeuken} also dealt with diverse
-image search results based on visual clustering. Some dealt with
-organizing photos. The ranking problem. Jing and Baluja \cite{Jing}
-tried to improve the ranking of product images using PageRank.  The
-relevancy judgement problem. Arase et al \cite{Arase} proposed a
-game-based approach to college human assigned relevancy of landmark
-images. Li et al \cite{Li} focused on improving the relevance
-judgement of web search results with image excerpts, identifying the
-dominant image in a page and displaying it in the excerpt.  Authority
-identification problem. Lempel and Soffer \cite{Lempel} built an image
-retrieval system; by analyzing link structure, they determine whether
-an image is came from an authoritative source without using visual
-information.  Crandall et al \cite{Crandall} proposed a technique of
-organizing a large dataset of geotagged photos using visual, textual,
-and temporal features. In relation to these works, ours depends on
-state-of-the-art visual analysis techniques to index and search
-images. But unlike these works, rather than the end, searching images
-is a mean to the goal of finding useful information.
+There has been a growing research interest in the problem of indexing,
+searching, and organizing images on the web.  Many classic problems
+originated from text search have been revisited in the new context of
+images. For exmaple, Jing and Baluja \cite{Jing} tackled the ranking
+problem in the context of searching product images using PageRank.
+Kennedy and Naaman \cite{Kennedy} and Van Leuken et al
+\cite{vanLeuken} both examined the problem of result diversfication in
+the context of image search; the former considered a specialized case
+of landmark images, whereas the latter considered a more general case
+involving a wider range of topics such as animals and cars. Lempel and
+Soffer \cite{Lempel} dealth with the problem of authority
+identification for web images by analyzing the link strcutures of the
+source pages.  Mehta et al \cite{Mehta} presented a solution to the
+problem of spam detection for web images; they analyzed visual
+features and looked for duplicate images in suspiciously large
+quantities as potential spam.  Li et al \cite{Li} considered the
+problem of relevance judgement and demonstrated the abilitiy of image
+excerpts (dominant image + snippets) to help users judge results
+faster. Crandall et al \cite{Crandall} took on the challenge of
+organizing a large dataset in the setting of tens of millions of
+geotagged images, taking a comprehensive approach involving visual,
+textual, and temporal features. Similar to these existing works, the
+current work relies on several state-of-the-art computer algorithm in
+order to index and search screenshots effectively. But unlike them,
+the current work finds similar images only as an intermmediate step
+toward the ultimate goal of returning relevant text to the users.
 
-Growing interests in cross language. Tanaka-Ishii and Nakagawa
-\cite{Tanaka-Ishii} built a usage consultation tool for language
-learners to engage in multi-lingual search to find the usage of any
-string of words. Scholl et al \cite{Scholl} explored ways to recognize
-web genres in a language independent manner based on structure of HTML
-markup. Ni et al \cite{Ni} seek ways to analyze and organize Web
-information written in different languages, mining multilingual
-topics from Wikipedia. In relation to these works, this work
-offers another interesting possibility---searching based on the
-universal visual language of screenshots.
+In response to accelerated globalization, there have been research
+efforts dedicated to make the Web more accessible to international
+users independent of the languages they speak. For example, Scholl et
+al \cite{Scholl} proposed a method to search the Web by genres such as
+blog and forum in a language independent manner. Ni et al \cite{Ni}
+explored ways to analyze and organize Web information written in
+different languages by mining multilingual topics from
+Wikipedia. Tanaka-Ishii and Nakagawa \cite{Tanaka-Ishii} developed a
+tool for language learners to perform multilingual search to find
+usage of foreign langugaes. In relation to research efforts,
+the current work offers yet another interesting and promising
+possiblity---searching based on the universal
+visual language of screenshots.
 
-There is also focus on helping computer users. Medhi et al \cite{Medhi}
-studied the optimal way of presenting audio-visual know-how knowledge to
-novice computer users.
+In terms of the application domain, the work closest to ours is that
+of Medhi et al \cite{Medhi} who examined the optimal way to present
+audio-visual know-how knowledge to novice computer users.  In terms of
+search modality, there have been several previous works aimed to
+provide users with mulitple search modalities instead of just
+keywords. For example, Narayan et al \cite{Narayan} developed a
+multi-modal mobile interface combining speech and text for accessing
+web information through a personalized dialog.  Dowman et al
+\cite{Dowman} dealt with the problem of indexing and searching radio
+and television news using both speech and text. In the current work,
+we explore the potential of the particular modality pair of image and
+text for searching computer-related articles.
 
-Several works have been presented to enable users to search in more
-than one modality. Narayan et al \cite{Narayan} studied multi-modal
-interfaces for mobile devices for accessing web information through a 
-personalized dialog based interaction based on speech and text. 
-Dowman et al \cite{Dowman} studied the problem of indexing and
-searching radio and television news using speech recognition transcripts
-and meta data of the web pages containing related news. Our multi-modal
-search is to use image and keywords with faceted search capabilities.
+%Arase et al \cite{Arase} proposed a
+%game-based approach to college human assigned relevancy of landmark
+%images. Amazon mechanical turk. 
 
-Amazon mechanical turk. In several components of the current work, we
-applied AMT for both training and testing.  Recently, many works have
-used AMT for labeling training images and for evaluating
-systems. Kittur et al \cite{Kittur} experimented with AMT
+In the current work, we used crowd-sourcing to train
+and evaluate the proposed system. 
+We used the crowd-sourcing serviced brokered by 
+Amazon Mechanical Turk (AMT), a vibrant micro-task
+market where people can be recruited to perform
+simple tasks with reasonable awards.
+which as been 
+AMT has recently been applied in many research works
+for the purpose of training and evaluation. 
+
+Kittur et al \cite{Kittur},
+experimented with AMT
 to perform user studies for collecting ratings of Wikipedia articles
 that match expert judgements.  In IR, Liu et al \cite{Liu} used AMT
 successfully to evaluated the system for predicting seeker
@@ -358,36 +378,7 @@ and their content isn't as current as compared to the Web. By
 using all these methods, we hope to create a rich repository of
 technical information that is both visually and textually relevant
 to and accessible by general computer users.
-
-
-%Since we were constrained by the limit of 1000 images imposed by
-%Bing's API, we needed to use different combinations of keywords in
-%order to explore different parts of the index.
-%
-%We submitted different combinations of computer-related keywords
-%as search terms to Bing Image Search. We retrieved the first 1,000
-%results and downloaded the images as well as the web pages
-%containing those images.
-
-%While in most image search applications false positive in search
-%results may be a curse, it is a blessing for data collection
-%purpose. For example, using system preferences as search terms,
-%while more than half of images are indeed screenshots of the
-%system preferences window, many images are of other interactive
-%windows that happen to be on pages that contain either the keyword
-%system or the keyword preference. Nevertheless, these screen
-%images are useful for users who happen to wish to query the system
-%about those interactive windows.
-
-%The API has restriction to only the top 1000 results. To increase
-%the likelihood of having a screenshot image, we use the filter
-%function to restrict to only illustration and graphics (namely,
-%ignoring natural photographs). In most cases, about 80\% are left.
-%In theory it is possible to greatly expand the database if we have
-%inside access to the index of the commercial search engines. We
-%obtained a total about 50,000 images.
-
-
+ 
 \subsection{Indexing images}
 
 \subsection{Finding similar images}
