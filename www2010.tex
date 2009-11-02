@@ -139,7 +139,7 @@ performance measures]
 \section{Introduction}
 
 Many online articles contain useful know-how knowledge about GUI
-applications. Users can learn from these articles how to perform a
+applications. Users can learn how to perform a
 wide variety of tasks, such as how to set up a home network, back up
 files, or change the speed of the mouse cursor. These resources are
 often created and made available online by software developers who
@@ -176,13 +176,13 @@ excerpts. Moreover, with the emphasis on second language education and the
 availability of free and powerful machine translation technology
 (e.g., Google Translate),  many Web users have begun to practice
 bilingual search in order to access more information beyond the
-confine of their native language. However, technical articles are
+confines of their native language. However, technical articles are
 often \textbf{inaccessible by bilingual search}. For example, a
 Chinese-speaking person fluent in English may be able to retrieve
 useful articles on dogs in both languages using the English or
 Chinese word for \emph{dog} as the search term. But when it comes
 to technical terms such as \emph{system preferences}, the same
-person may be confined to only Chinese articles since it may not be
+person may be limited to only Chinese articles as it may not be
 obvious how to translate these terms into English.
 
 %(The ranking in this example has been artificially adjusted in
@@ -240,7 +240,7 @@ system was evaluated (Section \ref{sec:evaluation}).
 
 There has been a growing research interest in the problem of indexing,
 searching, and organizing images on the web.  Many classic problems
-originated from text search have been revisited in the new context of
+originating from text search have been revisited in the new context of
 images. For example, Jing and Baluja \cite{Jing} tackled the ranking
 problem in the context of searching product images using PageRank.
 Kennedy and Naaman \cite{Kennedy} and Van Leuken et al
@@ -312,7 +312,7 @@ to cover wider demographics than lab-based studies. However, as
 identified by \cite{Kittur}, there are certain risks associated with
 this method such as getting dishonest answers, which can be prevented by
 formulating the problem in such a way that the optimal strategy for workers is to
-perform the task in an honest manner. Thus, in all of our
+perform the task in an honest manner. Consequently, in all of our
 applications of AMT, we built in validation mechanisms to control
 quality.
 
@@ -353,11 +353,11 @@ designed primarily for copyright infringement detection. We manually
 captured screenshot images of more than 300 interactive windows of
 popular programs across three of the most popular OS platforms (XP,
 Vista, and Mac OS). These images were submitted to TinEye to obtain
-about 5,000 images.x
+about 5,000 images.
 
 Third, we collected a library of 102 electronic books of popular
 software programs. We extracted all the image figures embedded in the
-electronic file (i.e., Pdf documents). This method produced about
+electronic file (i.e., PDF documents). This method produced about
 50k images.
 
 Each method has its own pros and cons. While Bing Image Search
@@ -474,7 +474,7 @@ application:
 \item[Title/Heading] An article's title and headings are 
   obvious choices for snippets since they often highlight the most
   important points covered by the article. Titles can be extracted
-  from the <title> tag for web pages. Headings are especially useful
+  from the \texttt{<title>} tag for web pages. Headings are especially useful
   when there are multiple screenshots contained in the same
   article. For web articles, we extract the heading tag (e.g., h1, h2)
   closest to and proceeding each screenshot. For book articles, we
@@ -644,7 +644,7 @@ results.
 \label{sec:finding_similar_images}
 
 Given a query screenshot, we need to find other similar screenshots in
-the database in order to retrieve visually relavent articles.  To do
+the database in order to retrieve visually relevant articles.  To do
 so, we extract visual features from the query image and compute the Hamming
 Embedding for each feature as was performed on the database images.
 The distance between each query bit-string is computed against all
@@ -1028,8 +1028,8 @@ In this experiment, we compared the proposed search system to two
 strong baseline systems: Bing Web and Bing Images, in terms of the
 perceived usefulness of the \emph{above-the-fold} results. The
 comparison among the three systems was based on the results returned
-by them for 20 frequently used application windows (10 for XP and 10
-for Mac).  and 10 Mac).  Figure \ref{} shows an example
+for 20 frequently used application windows (10 for XP and 10
+for Mac). Figure~\ref{fig:comparison_example} shows an example
 result for each system. For our system, the query is the screenshot
 of the application window. For the baseline systems, the query is the
 set of keywords based on the title of the window plus the name of the
@@ -1075,13 +1075,13 @@ are used as queries. We took screenshots of 15 representative
 programs on Mac in five languages (Spanish, French, German,
 Chinese, and Korean) and obtained a total of 75 test
 images.  We used these query images to retrieve the top 
-10 matches and counted the number of correct maches. 
-the number of correct matches. Table \ref{tbl:bilingual_search} summarizes
-our findings. As can be seen, some sceenshots continued to retrieve 
-matching images despite in a different language; they screenshots tend 
+10 matches and counted the number of correct matches. 
+Table \ref{tbl:bilingual_search} summarizes
+our findings. As can be seen, some screenshots continued to retrieve 
+matching images though they are in a different language; they screenshots tend 
 to contain visually rich patterns such as logos. On the other
 hand, some cases failed to retrieve any match; they tend to be
-dominated by text and can look very different in a differnt language,
+dominated by text and can look very different across languages,
 especially in block-based languages (i.e., Chinese and Korean) whose
 printed words often occupy smaller areas and appear denser than
 western alphabet-based words. These findings point to the potential
