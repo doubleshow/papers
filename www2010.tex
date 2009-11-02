@@ -126,15 +126,12 @@ useful results than keyword-based search web and image search engines.
 \end{abstract}
 
 % A category with only the three required fields
-\category{H.4.m}{Information Systems}{Miscellaneous}
-\category{D.2}{Software}{Software Engineering}
-%A category including the fourth, optional field follows...
-\category{D.2.8}{Software Engineering}{Metrics}[complexity measures,
-performance measures]
+\category{H.2.8}{Database Applications}{Image Databases}\\
+\category{I.4}{Computing Methodologies}{Image Processing and Computer Vision}
 
-\terms{Image search}
+\terms{Measurement, Human Factors}
 
-\keywords{Image search}
+\keywords{image search}
 
 \section{Introduction}
 
@@ -1029,7 +1026,7 @@ strong baseline systems: Bing Web and Bing Images, in terms of the
 perceived usefulness of the \emph{above-the-fold} results. The
 comparison among the three systems was based on the results returned
 by them for 20 frequently used application windows (10 for XP and 10
-for Mac).  and 10 Mac).  Figure \ref{} shows an example
+for Mac).  and 10 Mac).  Figure \ref{fig:comparison_example} shows an example
 result for each system. For our system, the query is the screenshot
 of the application window. For the baseline systems, the query is the
 set of keywords based on the title of the window plus the name of the
@@ -1109,6 +1106,21 @@ scope when screenshots are dominated by visual features.
 
 
 \section{Summary}
+
+We described a novel system for indexing and searching know-how
+articles about software applications. This system uses screenshot of
+application windows as search terms and is able to retrieve
+informatively articles illustrated by similar screenshots. This
+screenshot-based approach offers at least four advantages: (1) a
+screenshot query is easier to specify than keywords, (2) the context
+and topic are unambiguous identified by the screenshot and keywords
+respectively, (3) judging relevancy by viewing images is faster than
+by reading text, and (4) searching across language barriers is
+possible. We built a prototype system with more than 150k images and
+evaluated its performance with three experiments. We demonstrated our
+system's ability to match a wide variety of screenshots, to provide
+more useful results, and to match screenshots in other languages.
+
 
 \bibliographystyle{plain}
 \bibliography{www2010}
