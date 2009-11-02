@@ -37,7 +37,7 @@
 
 \begin{document}
 %
-\title{Search the Web Using GUI Screenshots}
+\title{Searching the Web Using Screenshots}
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
 %\textit{Author's Guide to Preparing ACM SIG Proceedings Using
@@ -104,25 +104,26 @@
 \maketitle
 
 \begin{abstract}
-Many online articles contain useful know-how knowledge about GUI
-applications that are richly illustrated by screenshots.  However, no
-system has been designed to take advantage of these screenshots to
-visually search this resource effectively.  In this paper, we present a novel
-system to index and search software know-how articles that leverages
-the visual correspondences between screenshots. To retrieve articles
-about an application, users can take a screenshot of the application
-to query the system and retrieve a list of articles containing a
-matching screenshot.  Useful snippets such as captions, references,
-and nearby text are automatically extracted from the retrieved
-articles and shown alongside with the thumbnails of the matching
-screenshots as excerpts for relevancy judgement. Retrieved articles
-are also ranked by a comprehensive set of visual, textual, and site
-features, whose weights are learned by RankSVM. Our prototype system
-currently contains 150k articles that are classified into walkthrough,
-book, gallery, and general categories. We demonstrated the system's
-ability to retrieve matching screenshots for a wide variety of
-programs, across language boundaries, and provide subjectively more
-useful results than keyword-based search web and image search engines.
+  Many online articles contain useful know-how knowledge about GUI
+  applications. Even though these articles tend to be richly
+  illustrated by screenshots, no system has been designed to take
+  advantage of these screenshots to visually search this resource
+  effectively.  In this paper, we present a novel system to index and
+  search software know-how articles that leverages the visual
+  correspondences between screenshots. To retrieve articles about an
+  application, users can take a screenshot of the application to query
+  the system and retrieve a list of articles containing a matching
+  screenshot.  Useful snippets such as captions, references, and
+  nearby text are automatically extracted from the retrieved articles
+  and shown alongside with the thumbnails of the matching screenshots
+  as excerpts for relevancy judgement. Retrieved articles are ranked
+  by a comprehensive set of visual, textual, and site features, whose
+  weights are learned by RankSVM. Our prototype system currently
+  contains 150k articles that are classified into walkthrough, book,
+  gallery, and general categories. We demonstrated the system's
+  ability to retrieve matching screenshots for a wide variety of
+  programs, across language boundaries, and provide subjectively more
+  useful results than keyword-based web and image search engines.
 \end{abstract}
 
 % A category with only the three required fields
@@ -131,12 +132,12 @@ useful results than keyword-based search web and image search engines.
 
 \terms{Measurement, Human Factors}
 
-\keywords{image search}
+\keywords{Image Search; Help}
 
 \section{Introduction}
 
 Many online articles contain useful know-how knowledge about GUI
-applications. Users can learn from these articles how to perform a
+applications. Users can learn how to perform a
 wide variety of tasks, such as how to set up a home network, back up
 files, or change the speed of the mouse cursor. These resources are
 often created and made available online by software developers who
@@ -173,13 +174,13 @@ excerpts. Moreover, with the emphasis on second language education and the
 availability of free and powerful machine translation technology
 (e.g., Google Translate),  many Web users have begun to practice
 bilingual search in order to access more information beyond the
-confine of their native language. However, technical articles are
+confines of their native language. However, technical articles are
 often \textbf{inaccessible by bilingual search}. For example, a
 Chinese-speaking person fluent in English may be able to retrieve
 useful articles on dogs in both languages using the English or
 Chinese word for \emph{dog} as the search term. But when it comes
 to technical terms such as \emph{system preferences}, the same
-person may be confined to only Chinese articles since it may not be
+person may be limited to only Chinese articles as it may not be
 obvious how to translate these terms into English.
 
 %(The ranking in this example has been artificially adjusted in
@@ -189,7 +190,8 @@ obvious how to translate these terms into English.
 \includegraphics[width=2\columnwidth]{figure/main_result.png}
 \caption{A typical result page returned by our
 proposd search engine that uses screenshots to search 
-for articles about computer programs.}
+for articles about computer programs (please visit
+authors' homepage to see more examples)}
 \label{fig:main_result}
 \end{figure*}
 
@@ -212,8 +214,8 @@ screenshot of an application to form a query, which is less cumbersome
 than entering several keywords to describe the application. In terms
 of the separation between context and topic, this approach is
 \textbf{unambiguous} since each search modality serves a well-defined
-role (i.e., context $\rightarrow$ screenshot, topic
-$\rightarrow$ keywords). In terms of relevancy judgement, this approach 
+role (i.e., screenshot $\rightarrow$ context, keywords
+$\rightarrow$ topic). In terms of relevancy judgement, this approach 
 is \textbf{cognitively simple}, by reducing the judgement task from
 reading text snippets to viewing images.  Finally, in terms of
 internalization, this approach is \textbf{language independent} since
@@ -237,7 +239,7 @@ system was evaluated (Section \ref{sec:evaluation}).
 
 There has been a growing research interest in the problem of indexing,
 searching, and organizing images on the web.  Many classic problems
-originated from text search have been revisited in the new context of
+originating from text search have been revisited in the new context of
 images. For example, Jing and Baluja \cite{Jing} tackled the ranking
 problem in the context of searching product images using PageRank.
 Kennedy and Naaman \cite{Kennedy} and Van Leuken et al
@@ -294,8 +296,8 @@ text for searching computer-related articles.
 %images. Amazon mechanical turk. 
 
 In the current work, we used crowd-sourcing to train and evaluate the
-proposed system.  We used the crowd-sourcing serviced brokered by
-Amazon Mechanical Turk (AMT), a vibrant micro-task market where people
+proposed system.  We used the crowd-sourcing services brokered by
+Amazon Mechanical Turk (AMT) \footnote{www.mturk.com}, a vibrant micro-task market where people
 can be recruited to perform simple tasks for small monetary
 awards. AMT has been applied in various research contexts for the
 purpose of training and evaluation. Kittur et al \cite{Kittur}
@@ -303,13 +305,13 @@ reported success in recruiting workers from AMT to rate Wikipedia
 articles and achieved quality comparable to that by expert raters.
 Liu et al \cite{Liu} used AMT to evaluate their algorithm for
 predicting satisfication of answers in online QA
-communities. \cite{Vijayanarasimha} used AMT to label images for
+communities. Vijayanarasimha et al \cite{Vijayanarasimha} used AMT to label images for
 learning visual classifiers.  AMT offers cost-effectiveness and the ability
 to cover wider demographics than lab-based studies. However, as
-identified by \cite{Kittur}, there are certain risks associated with
+identified by Kittur et al \cite{Kittur}, there are certain risks associated with
 this method such as getting dishonest answers, which can be prevented by
 formulating the problem in such a way that the optimal strategy for workers is to
-perform the task in an honest manner. Thus, in all of our
+perform the task in an honest manner. Consequently, in all of our
 applications of AMT, we built in validation mechanisms to control
 quality.
 
@@ -317,9 +319,16 @@ quality.
 \label{sec:building}
 
 This section describes the process of building the database for
-our proposed search engine.
+our proposed search engine. This process involves collecting
+images to populate the database (Section \ref{sec:collecting_images}),
+indexing the images collected by visual features (Section
+\ref{sec:indexing_images}), extracting useful snippets from the
+articles containing these images (Section
+\ref{sec:extracting_snippets}),
+and classifying articles into categories (Section \ref{sec:classifying_categories}).
 
 \subsection{Collecting images}
+\label{sec:collecting_images}
 
 %With lots of resources like a commercial search companies, it is
 %possible to crawl the web and collect a large number of
@@ -350,11 +359,11 @@ designed primarily for copyright infringement detection. We manually
 captured screenshot images of more than 300 interactive windows of
 popular programs across three of the most popular OS platforms (XP,
 Vista, and Mac OS). These images were submitted to TinEye to obtain
-about 5,000 images.x
+about 5,000 images.
 
 Third, we collected a library of 102 electronic books of popular
 software programs. We extracted all the image figures embedded in the
-electronic file (i.e., Pdf documents). This method produced about
+electronic file (i.e., PDF documents). This method produced about
 50k images.
 
 Each method has its own pros and cons. While Bing Image Search
@@ -371,6 +380,8 @@ technical information that is both visually and textually relevant
 to, and accessible by, general computer users.
  
 \subsection{Indexing images}
+\label{sec:indexing_images}
+
 Our image search task can be categorized as a content-based image
 retrieval (CBIR) problem; we are given a screenshot of an application
 the user would like information about and the desired result is a
@@ -380,8 +391,8 @@ aspects of the image are relevant for retrieval.  For example, when
 searching for photos of a particular person, we may largely ignore the
 scene while focusing on detecting and recognizing faces; however, if
 our goal is to collect photos taken at national landmarks, we
-would place our focus on the background (for a recent survey on CBIR
-methods see \cite{Datta1348248}).
+would place our focus on the background (more information on
+CBIR can be found in a recent survey by Datta et al \cite{Datta1348248}).
 
 In the domain of common GUI screenshots, we have several desired
 properties of a CBIR system.  As book and web screenshots are often
@@ -410,7 +421,7 @@ reduce common color theme variations and the differences between gray
 and color images often found in PC help books and websites
 respectively.  To achieve scale, rotation, and illumination
 invariance, we use the SURF feature point detector and descriptor
-\cite{VanGool1370556} to find and describe regions of interest.  The
+developed by Bay et al \cite{VanGool1370556} to find and describe regions of interest.  The
 SURF descriptor produces a 64 dimensional feature vector for each
 feature point found and, for our purposes, the spatial coordinates and
 scale of the features are neglected.
@@ -423,8 +434,8 @@ within some Euclidean distance to a query image feature; however, this
 method would require a substantial amount of memory to allow for fast
 comparison.  Moreover, every query feature would be compared to every
 database feature, preventing real-time performance on even modestly
-sized databases.  To combat this problem, we use the method described
-in \cite{Schmid1478419}.  Provided a database of book and web images,
+sized databases.  To combat this problem, we use the method developed
+by Jegou et al \cite{Schmid1478419}.  Provided a database of book and web images,
 we compute SURF features. The features are clustered using K-Means,
 and each individual feature is assigned to its nearest cluster.  For
 each cluster, we compute the median value for each of the 64
@@ -439,10 +450,10 @@ Hamming distance between two bit-strings belonging to the same
 cluster.
 
 The offline database process is implemented using the Hadoop
-map/reduce \cite{Ghemaqat1327492} implementation to allow the
+map/reduce implementation by Dean and Ghemawat \cite{Ghemaqat1327492} to allow the
 computation to scale with the database size.  The entire feature
 computation and indexing procedure for our 150,000 image database
-takes under two hours on a cluster of six High-CPU Amazon EC2
+takes under two hours on a cluster of six High-CPU Amazon EC2 \footnote{aws.amazon.com/ec2/}
 instances.
 
 \subsection{Extracting Snippets}
@@ -471,7 +482,7 @@ application:
 \item[Title/Heading] An article's title and headings are 
   obvious choices for snippets since they often highlight the most
   important points covered by the article. Titles can be extracted
-  from the <title> tag for web pages. Headings are especially useful
+  from the \texttt{<title>} tag for web pages. Headings are especially useful
   when there are multiple screenshots contained in the same
   article. For web articles, we extract the heading tag (e.g., h1, h2)
   closest to and proceeding each screenshot. For book articles, we
@@ -547,6 +558,7 @@ application:
 \end{description}
 
 \subsection{Classifying articles into categories}
+\label{sec:classifying_categories}
 
 In addition to extracting useful text from articles, we can also
 classify them into distinct categories based on their origins,
@@ -570,12 +582,12 @@ summarizes the distribution of articles over the categories.
 
 \begin{figure}
 \includegraphics[width=1\columnwidth]{figure/walkthrough_examples.png}
-\caption{Examples of articles providing step-by-step walkthroughs.}
+\caption{Examples of articles providing step-by-step walkthroughs}
 \label{fig:example_walkthrough}
 \end{figure}
 
 \begin{table}
-\centering \caption{Number of articles in each category.}
+\centering \caption{Number of articles in different categories}
 \label{tbl:category_distribution}
 
 \begin{tabular}{|c|c|c|c||c|}
@@ -628,8 +640,8 @@ image query to our search engine and display the search results in the
 default web browser. Alternatively, users can use any existing
 image capture utilities such as the snipping tool on Windows Vista
 or the Command-Shift+4 hotkey on Mac OS to capture screenshots.
-Users can use a Web interface to submit the screenshots to Sikuli
-Search and view the results directly.
+Users can use a Web interface to submit the screenshots to our search
+engine and view the results directly in a Web browser.
 
 Keywords queries are optional and can be specified in three ways.
 They can be entered together with the screenshot queries on both
@@ -641,7 +653,7 @@ results.
 \label{sec:finding_similar_images}
 
 Given a query screenshot, we need to find other similar screenshots in
-the database in order to retrieve visually relavent articles.  To do
+the database in order to retrieve visually relevant articles.  To do
 so, we extract visual features from the query image and compute the Hamming
 Embedding for each feature as was performed on the database images.
 The distance between each query bit-string is computed against all
@@ -1002,7 +1014,7 @@ scale up the database, these percentages will rise.
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/query_examples.png}
 \caption{Examples of query images used in screenshot matching
-experiments.}
+experiments}
 \label{fig:query_examples}
 \end{figure*}
 
@@ -1025,8 +1037,8 @@ In this experiment, we compared the proposed search system to two
 strong baseline systems: Bing Web and Bing Images, in terms of the
 perceived usefulness of the \emph{above-the-fold} results. The
 comparison among the three systems was based on the results returned
-by them for 20 frequently used application windows (10 for XP and 10
-for Mac).  and 10 Mac).  Figure \ref{fig:comparison_example} shows an example
+for 20 frequently used application windows (10 for XP and 10
+for Mac). Figure~\ref{fig:comparison_example} shows an example
 result for each system. For our system, the query is the screenshot
 of the application window. For the baseline systems, the query is the
 set of keywords based on the title of the window plus the name of the
@@ -1066,32 +1078,35 @@ three systems on a 5 point Likert scale}
 
 \subsection{Bilingual search feasibility}
 
+
+\begin{table*}
+  \caption{Number of correct top 10 matches for 15 application windows 
+    in five non-English
+    languages: Spanish (S), French (F), German (G), Chinese (C) and Korean (K)}
+\includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
+\label{tbl:bilingual_search}
+\end{table*}
+
 In this experiment, we examined to what extent our system can support
 bilingual search when screenshots of programs in different languages
 are used as queries. We took screenshots of 15 representative
 programs on Mac in five languages (Spanish, French, German,
 Chinese, and Korean) and obtained a total of 75 test
 images.  We used these query images to retrieve the top 
-10 matches and counted the number of correct maches. 
-the number of correct matches. Table \ref{tbl:bilingual_search} summarizes
-our findings. As can be seen, some sceenshots continued to retrieve 
-matching images despite in a different language; they screenshots tend 
+10 matches and counted the number of correct matches. 
+Table \ref{tbl:bilingual_search} summarizes
+our findings. As can be seen, some screenshots continued to retrieve 
+matching images though they are in a different language; they screenshots tend 
 to contain visually rich patterns such as logos. On the other
 hand, some cases failed to retrieve any match; they tend to be
-dominated by text and can look very different in a differnt language,
+dominated by text and can look very different across languages,
 especially in block-based languages (i.e., Chinese and Korean) whose
 printed words often occupy smaller areas and appear denser than
 western alphabet-based words. These findings point to the potential
 for our system to support bilingual search, albeit in a limited
 scope when screenshots are dominated by visual features. 
 
-\begin{table*}
-  \caption{Number of correct top 10 matches for 15 application windows 
-    in five non-English
-    languages: Spanish (S), French (F), German (G), Chinese (C) and Korean (K).}
-\includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
-\label{tbl:bilingual_search}
-\end{table*}
+
 
 
 % \section{Discussion}
@@ -1108,22 +1123,25 @@ scope when screenshots are dominated by visual features.
 \section{Summary}
 
 We described a novel system for indexing and searching know-how
-articles about software applications. This system uses screenshot of
-application windows as search terms and is able to retrieve
-informatively articles illustrated by similar screenshots. This
-screenshot-based approach offers at least four advantages: (1) a
-screenshot query is easier to specify than keywords, (2) the context
-and topic are unambiguous identified by the screenshot and keywords
-respectively, (3) judging relevancy by viewing images is faster than
-by reading text, and (4) searching across language barriers is
-possible. We built a prototype system with more than 150k images and
-evaluated its performance with three experiments. We demonstrated our
-system's ability to match a wide variety of screenshots, to provide
-more useful results, and to match screenshots in other languages.
+articles about software applications. This system can take a
+screenshot of an application window as the search term and is able to
+retrieve a list of articles illustrated by the screenshots of the same
+application. This screenshot-based approach offers at least four
+advantages: (1) a screenshot query is easier to specify than keywords,
+(2) the context and topic are unambiguous identified by the screenshot
+and keywords respectively, (3) judging relevancy by viewing images is
+faster than by reading text, and (4) searching across language
+barriers is possible. We built a prototype system with more than 150k
+images and evaluated its performance with three experiments. We
+demonstrated our system's ability to match a wide variety of
+screenshots, to provide more useful results, and to match screenshots
+in other languages.
 
 
 \bibliographystyle{plain}
 \bibliography{www2010}
+
 \balancecolumns % GM July 2000
+
 % That's all folks!
 \end{document}
