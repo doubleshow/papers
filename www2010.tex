@@ -169,14 +169,14 @@ the title of the dialog window, and any other information needed
 to identify the dialog window. Not only is it \textbf{cumbersome
 to enter many keywords} but also these keywords are \textbf{prone
 to ambiguity} since it is hard distinguish the keywords describing
-the program from those describing the task. Moreover, as the user
+the program from those describing the task. As the user
 browses the links in the result, the user may find it
-\textbf{difficult to judge relevancy} based only on the summary
-text. The emphasis on second language education and the
+\textbf{difficult to judge relevancy} based only on the text
+excerpts. Moreover, with the emphasis on second language education and the
 availability of free and powerful machine translation technology
-(e.g., Google Translate) have enabled many Web users to perform
+(e.g., Google Translate),  many Web users have begun to practice
 bilingual search in order to access more information beyond the
-confine of their native languages. However, technical articles are
+confine of their native language. However, technical articles are
 often \textbf{inaccessible by bilingual search}. For example, a
 Chinese-speaking person fluent in English may be able to retrieve
 useful articles on dogs in both languages using the English or
@@ -190,9 +190,9 @@ obvious how to translate these terms into English.
 
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/main_result.png}
-\caption{Searching articles about computer programs using
-their screenshots. This is an example of a typical
-result page}
+\caption{A typical result page returned by our
+proposd search engine that uses screenshots to search 
+for articles about computer programs.}
 \label{fig:main_result}
 \end{figure*}
 
@@ -229,10 +229,14 @@ This paper reports on the two major contributions made by the current research:
 \item Built and evaluated a prototype system with more than 150K unique
 pages.
 \end{itemize}
-
-Road map
+In the rest of the paper, we review related work (Section
+\ref{sec:related_work}), describe the how we built the database for our
+proposed system (Section \ref{sec:building}), explain how the database
+can be searched (Section \ref{sec:searching}), and describe how the
+system was evaluated (Section \ref{sec:evaluation}).
 
 \section{Related Work}
+\label{sec:related_work}
 
 There has been a growing research interest in the problem of indexing,
 searching, and organizing images on the web.  Many classic problems
@@ -313,6 +317,10 @@ applications of AMT, we built in validation mechanisms to control
 quality.
 
 \section{Building the database}
+\label{sec:building}
+
+This section describes the process of building the database for
+our proposed search engine.
 
 \subsection{Collecting images}
 
@@ -324,35 +332,33 @@ quality.
 %came from three sources.
 
 We used three methods to collect screenshot images to populate our
-database. Currently, our prototype system contains a total of
-150,000 images in its index.
+database. Currently, our prototype system contains more than 150k
+images in its index.
 
-First, we submitted computer-related keywords to Bing Image Search
-to collect screenshot images of interactive programs. To increase
-the likelihood of obtaining the desired images, we sampled
-keywords from title bars of the dialog windows of various computer
-programs. Some examples of these keywords are properties,
-preferences, option, settings, wizard, custom, installation,
-network, sound, keyboard ....etc. We turned on the filter feature
-to keep only illustrations and graphics, rejecting obviously
-non-screenshot images such as images of faces and natural scenes.
-Using this method, we collected a total of 100,000 images, about
-80\% of them are screenshots of computer programs.
+First, we submitted computer-related keywords to Bing Images
+\footnote{www.bing.com/images} to collect screenshot images of
+interactive programs. To increase the likelihood of obtaining the
+desired images, we sampled keywords from title bars of the dialog
+windows of various computer programs. Some examples of these keywords
+are properties, preferences, option, settings, wizard, custom,
+installation, network, sound, keyboard ... etc. We turned on the
+filter feature to keep only illustrations and graphics, rejecting
+obviously non-screenshot images such as images of faces and natural
+scenes.  Using this method, we collected approximately 100k images.
 
-Second, we used TinEye, a reverse image search engine that can
-take an image as the query and return a list of URLs to nearly
-identical copies of the image found on the Web; it is designed primarily for copyright
-infringement detection. We manually captured screenshot images of more than
-300 interactive windows of popular programs across three of the
-most popular OS platforms (XP, Vista, and Mac OS). These images
-were submitted to TinEye to obtain about 5,000 images. Since the
-visual similarity matching performed by TinEye is very precise,
-all of these images are screenshot images.
+Second, we used TinEye\footnote{www.tineye.com}, a reverse image
+search engine that can take an image as the query and return a list of
+URLs to nearly identical copies of the image found on the Web; it is
+designed primarily for copyright infringement detection. We manually
+captured screenshot images of more than 300 interactive windows of
+popular programs across three of the most popular OS platforms (XP,
+Vista, and Mac OS). These images were submitted to TinEye to obtain
+about 5,000 images.x
 
 Third, we collected a library of 102 electronic books of popular
-software programs. We extracted all the image figures embedded in
-the electronic file (i.e., Pdf documents). About x\% of these
-figures are screenshots. This method produced about 50,000 images.
+software programs. We extracted all the image figures embedded in the
+electronic file (i.e., Pdf documents). This method produced about
+50k images.
 
 Each method has its own pros and cons. While Bing Image Search
 provides the best variety of images, many of them are not visually
@@ -417,57 +423,63 @@ aim is to produce a fast image comparison system.  A possible solution
 is to store all of the feature vectors for all images and, given a
 query image, cast a vote for each database image that has a feature
 within some Euclidean distance to a query image feature; however, this
-method would require a substantial amount of memory to allow
-for fast comparison.  Moreover, every query feature would be compared
-to every database feature, preventing real-time performance on even
-modestly sized databases.  To combat this problem, we use the method
-described in \cite{Schmid1478419}.  Provided a database of book and web
-images, we compute SURF features. The features are clustered using
-K-Means, and each individual feature is assigned to its nearest
-cluster.  For each cluster, we compute the median value for each of
-the 64 dimensions in the SURF descriptor.  For each feature in the
-cluster, we compare the cluster's median value to the feature vector,
-producing a 64 dimension bit-string encoding each dimension's
-proximity to the median value.  This process results in what is
-referred to as a Hamming Embedding of the feature vector, which
-requires 8 bytes of memory for each feature (compared to 256 bytes for the floating point vector) and allows for fast
-distance computation by simply taking the Hamming distance between two
-bit-strings belonging to the same cluster.
+method would require a substantial amount of memory to allow for fast
+comparison.  Moreover, every query feature would be compared to every
+database feature, preventing real-time performance on even modestly
+sized databases.  To combat this problem, we use the method described
+in \cite{Schmid1478419}.  Provided a database of book and web images,
+we compute SURF features. The features are clustered using K-Means,
+and each individual feature is assigned to its nearest cluster.  For
+each cluster, we compute the median value for each of the 64
+dimensions in the SURF descriptor.  For each feature in the cluster,
+we compare the cluster's median value to the feature vector, producing
+a 64 dimension bit-string encoding each dimension's proximity to the
+median value.  This process results in what is referred to as a
+Hamming Embedding of the feature vector, which requires 8 bytes of
+memory for each feature (compared to 256 bytes for the floating point
+vector) and allows for fast distance computation by simply taking the
+Hamming distance between two bit-strings belonging to the same
+cluster.
 
-The offline database process is implemented using the Hadoop map/reduce \cite{Ghemaqat1327492} implementation to allow the computation to scale with the database size.  The entire feature computation and indexing procedure for our 150,000 image database takes under two hours on a cluster of six High-CPU Amazon EC2 instances.
+The offline database process is implemented using the Hadoop
+map/reduce \cite{Ghemaqat1327492} implementation to allow the
+computation to scale with the database size.  The entire feature
+computation and indexing procedure for our 150,000 image database
+takes under two hours on a cluster of six High-CPU Amazon EC2
+instances.
+
 \subsection{Extracting Snippets}
 \label{sec:extracting_snippets}
 
 After collecting and indexing a large number of screenshots, we need
-to extract relevant text from their source articles. The objective of text extraction is to identify snippets
-in an article that can highlight and/or give hints about the kinds of
-knowledge users can expect to obtain if they read the article. For
-example, for an article containing a screenshot of the network
-configuration program, a good snippet would be ``set IP address'' or
-``enable wireless network'' since it clearly indicates to users the
-article is likely to explain how to perform these tasks. On the other
-hand, a snippet such as ``network configuration'' that describes the
-screenshot's content is less useful to users since they already see
-the content in the screenshot and learn nothing new from reading the
-content again in the snippet. Note that this is in sharp contrast with
-typical image search engines that actually favor snippets describing
-image contents in order to index and search images. Below we list N
-types of informative snippets that we extract for the purpose of our 
-search application:
+to extract relevant text from their source articles. The objective of
+text extraction is to identify snippets in an article that can
+highlight and/or give hints about the kinds of knowledge users can
+expect to obtain if they read the article. For example, for an article
+containing a screenshot of the network configuration program, a good
+snippet would be ``set IP address'' or ``enable wireless network''
+since it clearly indicates to users the article is likely to explain
+how to perform these tasks. On the other hand, a snippet such as
+``network configuration'' that describes the screenshot's content is
+less useful to users since they already see the content in the
+screenshot and learn nothing new from reading the content again in the
+snippet. Note that this is in sharp contrast with typical image search
+engines that actually favor snippets describing image contents in
+order to index and search images. Below we describe six kinds of
+informative snippets that we extract for the purpose of our search
+application:
 
 \begin{description}
 
-\item[Title] We extract the text in the Title tag from the HTML
-  header. For a book, we simply use its title.
-
-\item[Heading] Compared to the title, headings provides more specific
-  information regarding the topic of an article containing a
-  screenshot. Headings are especially useful when there are multiple
-  screenshots contained in the same article. For web articles, we
-  extract the heading tag (e.g., h1, h2) closest to and proceeding each
-  screenshot. For book articles, we extract the chapter and section
-  headings from the outline metadata stored in the PDF file whenever
-  such metadata is available.
+\item[Title/Heading] An article's title and headings are 
+  obvious choices for snippets since they often highlight the most
+  important points covered by the article. Titles can be extracted
+  from the <title> tag for web pages. Headings are especially useful
+  when there are multiple screenshots contained in the same
+  article. For web articles, we extract the heading tag (e.g., h1, h2)
+  closest to and proceeding each screenshot. For book articles, we
+  extract the chapter and section headings from the outline metadata
+  stored in the PDF file whenever such metadata is available.
 
 \item[Alt Text] An image's ALT tag provides information redundancy in
   cases where the image fails to be displayed. The text attribute of an
@@ -566,17 +578,17 @@ summarizes the distribution of articles over the categories.
 \end{figure}
 
 \begin{table}
-\centering \caption{Number of images in each category.}
+\centering \caption{Number of articles in each category.}
 \label{tbl:category_distribution}
 
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c||c|}
 \hline
   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
-      & General & Walkthrough & Gallery & Book \\
+      General & Walkthrough & Gallery & Book & Total\\
 \hline
-Total & 34,509 & 30,449 & 2,943 & 55,244\\
- \hline
-(\%)  & 32.7 & 28.7 & 2.8 & 35.6 \\
+ 51,743 & 45,249 & 4,464 & 55,244 & 156,700\\
+ 
+ (33.1\%) & (28.9\%) & (2.9\%) & (35.1\%) & \\
 \hline
 \end{tabular}
 
@@ -590,8 +602,20 @@ Total & 34,509 & 30,449 & 2,943 & 55,244\\
 
 
 \section{Searching the database}
+\label{sec:searching}
+
+This section describes the process of searching the database. This
+process involves specifying queries (Section
+\ref{sec:specifying_queries}), 
+retrieving articles with similar
+images (Section \ref{sec:finding_similar_images}), ranking retrieved
+articles
+(Section \ref{sec:ranking_retrieved_articles}), and presenting them to
+the users
+(Section \ref{sec:presenting_results}).
 
 \subsection{Specifying queries}
+\label{sec:specifying_queries}
 
 Our proposed search engine supports mixed-modality queries in order to
 optimize the effectiveness in searching technical articles about
@@ -617,35 +641,39 @@ results, they can enter keywords to filter and/or refine the
 results.
 
 \subsection{Finding similar images}
-Given a query image we
-compute the Hamming Embedding for each feature as was performed on the
-database images.  The distance between each query bit-string is
-computed against all database bit-strings in the nearest cluster to
-the query feature vector.  All features within a certain Hamming
-distance cast a vote for their corresponding database image.  This
-look-up process uses an inverted file for each cluster which contains
-lines of bit-strings and their corresponding database image IDs.  The
-result is a histogram of image votes from which we produce a ranked list of
-database images as compared to the query image.
+\label{sec:finding_similar_images}
 
-Image retrieval times for each query image when $k=1,000$, where $k$ is the number of clusters, is .0053 seconds per query feature (approximately 100 features per image) and when $k=10,000$ it is 0.0015 seconds per query feature; however, the latter has fewer image votes due to the decrease in features per cluster as $k$ increases.
+Given a query screenshot, we need to find other similar screenshots in
+the database in order to retrieve visually relavent articles.  To do
+so, we extract visual features from the query image and compute the Hamming
+Embedding for each feature as was performed on the database images.
+The distance between each query bit-string is computed against all
+database bit-strings in the nearest cluster to the query feature
+vector.  All features within a certain Hamming distance cast a vote
+for their corresponding database image.  This look-up process uses an
+inverted file for each cluster which contains lines of bit-strings and
+their corresponding database image IDs.  The result is a histogram of
+image votes from which we produce a ranked list of database images as
+compared to the query image. The average retrieval time for a query
+image when $k=1,000$, where $k$ is the number of clusters, is .53
+seconds on a single CPU 2.4GHz machine.
 
+\subsection{Ranking retrieved articles}
+\label{sec:ranking_retrieved_articles}
 
-\subsection{Ranking articles}
-
-Since our search application involves both images (i.e., screenshots)
-and text, we can not rank the articles in the search results based on
-either modality alone. If ranking is based only on visual similarity,
-as in the case of a typical content-based image search engine, even
-though the highest ranked article may contain the right screenshot,
-there is no indication whether the article also contain any useful
-text. Similarly, if ranking is based only on text, as in the case of a
-typical keyword search engine, despite having all the keywords, an
-article may still be useless if it contains the wrong
-screenshot. Therefore, a new ranking scheme based on a comprehensive
-set of multimodal features needs to be developed. These features can
-be roughly classified into three types: visual, text, and site,
-which will be explained in detail next.
+After retrieving a list of articles ranked by visual similarity, we
+need to re-rank them by taking textual relevancy into account.  If
+ranking is based only on visual similarity, as in the case of a
+typical content-based image search engine, even though the highest
+ranked article may contain the right screenshot, there is no guarantee
+whether the article also contains any useful text. Similarly, if
+ranking is based only on text, as in the case of a typical keyword
+search engine, despite having all the keywords, an article may still
+be useless if it contains the wrong screenshot. Therefore, it is
+necessary to adopt a ranking scheme based on a comprehensive set of
+multimodal features. In the current work, we consider three types of
+features: visual, text, and site, which will be explained in detail
+next.
 
 \subsubsection{Visual Features}
 
@@ -689,9 +717,9 @@ which will be explained in detail next.
   last. We can compute three distinct position scores as the
   normalized distances to each of the three prominent positions.
 
-\item[Number of coexisting images] The fewer unrelated images a page has,
-  the more likely the information on the page will be about the
-  matching image. This count has to exclude images that are not screenshots.
+% \item[Number of coexisting images] The fewer unrelated images a page has,
+%   the more likely the information on the page will be about the
+%   matching image. This count has to exclude images that are not screenshots.
 
 \end{description}
 
@@ -732,7 +760,7 @@ which will be explained in detail next.
   technical content. We identified a list of sites users
   may find authoritative, including sites hosted by software vendors
   such as Microsoft and Apple and those dedicated to know-how
-  knowledge such as HowTo.com and ExpertVillage.com. We derived a
+  knowledge such as eHow and wikiHow. We derived a
   binary feature for each site.
 
 \item[Quantity] Some sites may contain relatively more screenshots,
@@ -740,7 +768,13 @@ which will be explained in detail next.
   involving screenshots.  We counted the number of unique screenshots
   collected from each domain and rank all the domains by this
   number. We then used the percentile in the ranking to compute a
-  numerical feature between 0 and 1.
+  numerical feature between 0 and 1. Table \ref{tbl:top10sites} lists
+  the 10 sites in our database that have the most number of images.
+
+
+
+
+
 
 %% \item[Quality]
 
@@ -753,46 +787,104 @@ which will be explained in detail next.
 
 \end{description}
 
+\begin{table}
+\centering \caption{Top 10 sites with the most images}
+\label{tbl:top10sites}
+\begin{tabular}{|c|c||c|c|}
+\hline
+microsoft.com & 320 & qweas.com & 110 \\
+ehow.com & 183 & softpedia.com & 110 \\
+brothersoft.com & 163 & bestshareware.net & 108 \\
+techrepublic.com & 121 & gateway.com & 106 \\
+versiontracker & 113  & askdavetaylor.com & 106 \\  
+\hline
+\end{tabular}
+\end{table}
+
+
 \subsubsection{Setting feature weights}
 
-Since not all features are equally important, it is necessary to
-choose a set of weights in order to reflect these features' relative
+Since not all features are equally important, it is necessary to set
+the weights appropriately in order to reflect these features' relative
 importance. In developing the prototype of our system, we set the
-weights following the three steps described below.
+weights in three stages. Table \ref{tbl:feature_weights} lists all the
+features and indicates the stages when the weights are set. First
+(stage 1), we apply RankSVM to learn feature weights based on the
+training data collected using Amazon Mechanical Turk. RankSVM was
+originally proposed by Joachims \cite{Joachims} to learn how to weight
+features from a set of subjective ordering constraints inferred from
+user click-through data to improved ranking. At the development stage,
+we did not have any click-through data to derive ordering constraints
+for RankSVM. Thus, we recruited workers from Amazon Mechanical Turk to
+provide us explicit article ratings from which to infer ordering
+constraints. We chose five query images known to retrieve a large of
+number of articles, but they are ranked only by visual similarity. We
+shuffled the order of these articles and presented them in a list,
+Each worker was asked to rate each article in terms of usefulness on a
+5-point scale. For quality control, we included two junk results and
+two duplicate results. To pass the quality test, workers must
+successfully mark junk results as useless and give consistent ratings
+to duplicate results. Then, each pair of ratings provided us with an
+ordering constraint for training RankSVM. Note that since there was no
+easy way to ask the workers to provide meaningful keywords, this
+procedure only applied to the subset of features that do not depend on
+keywords.
 
-First, we apply RankSVM to learn feature weights based on the training
-data collected using Amazon Mechanical Turk. RankSVM was originally
-proposed by Joachims \cite{Joachims} to learn how to weight a set of
-features from orderings inferred from click-throughs. At the
-development stage, we did not have any click-through data to work
-with. Thus, we recruited workers from AMT to provide us explicit
-relevancy ratings from which to infer ordering constraints. We chose
-five query images known to have many good matches. We added four
-validation results.  Two results were known to be irrelevant; they
-were generated by randomly picking the results of other
-queries. Workers must identify them as irrelevant. The other two
-validation results are copies of other results in the set. Workers
-must provide consistent answers for both. In total, a worker rates the
-relevancy of 10 results on a 5-point scale (0: completely useless, 5:
-very useful. From each task, we collected 6 new relevancy ratings. We
-generated an ordering constraint for each pair of ratings that differ
-by at least one. We obtained 600 ordering constraints from 50 unique
-tasks. Based on these constraints, we were able to apply RankSVM to
-learn appropriate feature weights. Also, at this stage, we do not have
-queries to work with.
+Next (stage 2), we set the weights of keyword-related features based
+on the weights of corresponding features. For example, if the weight
+of \emph{has\_title} feature is high, it is likely the weight of
+\emph{has\_keywords\_in\_title} must also be high. Thus, we set the
+weight of each keyword-releated feature to 1.5 times the weight of its
+corresponding feature learned at the previous stage. Finally (stage
+3), with all the weights set at a reasonable level, we can deploy the
+system and continue to refine the weights using RankSVM based on
+actual user click-through data.
 
-Next, we set the weights of query dependent features based on the
-weights of corresponding query independent features. For example, if
-the weight of \emph{has\_caption} feature is high, it is likely the
-weight of \emph{has\_keyword\_in\_weight} should be hight. Thus, we set
-the weight of each query dependent feature to 1.5 times the weight of
-its corresponding query independent feature.
 
-Finally, we bring the system online with these initial set of
-weights. The system records user click-throughs and can continue to
-refine the weights by applying RankSvm.
+\begin{table}[t]
+\centering \caption{Features for ranking retrieved 
+articles. Checks
+indicate the stages when weights are set. 
+Features with highest weights are shown in bold.}
+\label{tbl:feature_weights}
+\vspace{0.2cm}
 
-\subsection{Presenting the results}
+\begin{tabular}{|c|l||c|c|c|}
+\hline
+Type & Name & 1 & 2 & 3 \\
+\hline
+\hline
+Image & \textbf{visually\_similar} & & & $\surd$ \\
+& common\_resize\_ratio &$\surd$& & $\surd$\\
+& position\_to\_first &$\surd$& & $\surd$\\
+& position\_to\_center &$\surd$& & $\surd$\\
+& position\_to\_last &$\surd$& & $\surd$ \\
+\hline
+Text & \textbf{has\_title} &$\surd$& & $\surd$ \\
+& has\_caption &$\surd$& & $\surd$ \\
+& \textbf{has\_reference}  &$\surd$& & $\surd$\\
+& has\_nearby\_text &$\surd$& & $\surd$\\
+& \textbf{is\_walkthrough} &$\surd$& & $\surd$\\
+& is\_book &$\surd$& & $\surd$\\
+& is\_gallery  &$\surd$& & $\surd$\\
+& is\_general &$\surd$& & $\surd$\\
+& \textbf{has\_keywords\_in\_title}  &&$\surd$ & $\surd$ \\
+& has\_keywords\_in\_caption &&$\surd$ & $\surd$ \\
+& \textbf{has\_keywords\_in\_reference} &&$\surd$ & $\surd$\\
+& \textbf{has\_keywords\_in\_nearby\_text} &&$\surd$ & $\surd$\\
+& keywords\_distance\_to\_image && $\surd$ & $\surd$\\
+\hline
+Site & \textbf{site\_is\_authority} &$\surd$& & $\surd$\\
+& site\_has\_many\_images &$\surd$& & $\surd$\\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Presenting results}
+\label{sec:presenting_results}
 
 %% New presentation scheme is needed for our purpose. In text search,
 %% the keywords are highlighted, and displayed in the context of the
@@ -807,10 +899,17 @@ refine the weights by applying RankSvm.
 
 %% \subsubsection{Result}
 
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{figure/result_tile.png}
+\caption{Elements of result presentation}
+\label{fig:result_tile}
+\end{figure}
+
 To display a list of search results, we adopt a presentation scheme 
 modeled after that of a typical search engine in order to 
 leverage users' existing familiarity with such scheme.  Figure
-\ref{result_example} shows a typical presentation of a single
+\ref{fig:result_tile} shows a typical presentation of a single
 result. This presentation consists of three main elements: title,
 excerpt, and source, that are common for all result types. In addition
 there are several minor elements such as tags and actions that
@@ -831,15 +930,14 @@ by 15 pixels) into each snippet in a way to reflect the snippet's
 type. For a caption snippet, the tiny thumbnail is displayed above the
 snippet and centered. For a reference snippet, any explicit figure
 label is replaced by the tiny thumbnail of the corresponding
-screenshot (i.e., as shown in Figure 2 $\rightarrow$ as shown in
-\includegraphics{figure/tiny.png}). For a nearby text snippet, the
+screenshot (i.e., \emph{as shown in Figure 2} $\rightarrow$ \emph{as shown in}
+\includegraphics[height=0.2in]{figure/tiny.png}). For a nearby text snippet, the
 tiny thumbnail is displayed above or below depending on the image's
 relative position. If keywords are specified, their occurrences in the
 excerpt are highlighted.
 
 For the source element, we display the abbreviated url for web
 results and chapter/section headings for book results.
-
 
 \subsubsection{Faceted search}
 
@@ -872,29 +970,35 @@ results of two screenshot queries.}
 
 
 \section{Evaluation}
+\label{sec:evaluation}
+
+We conducted three sets of experiments to evaluate the proposed system.
 
 \subsection{Screenshot matching performance}
 
 In this experiment, we evaluated the core functionality of our system:
 the ability to search for similar screenshot images.  We created a
-test set of 100 unique images that cover three major operating systems
-(Windows XP, Windows Vista, and Mac OS X) and several popular programs
-such as Microsoft Office, Firefox, and Skype. Figure
-\ref{fig:query_examples} shows a number of screenshot examples.  We
-evaluated among the returned images, how many of them are correct. We
-used AMT to evaluate the result. Each result is independently reviewed
-by as least two workers. We only ask them to rate at most the top 10. For
-some screenshot queries, the returned results can be fewer than 10. To
-prevent the Turkers from cheating, we mixed in one image known to be a
-match (the query image itself) and two images known to be a mismatch
-(two other query images). The results are shuffled. This setup ensures
-that the optimal strategy for the workers is to perform tasks
-honestly. The Turker marks each image in the result as match or
-mismatch. The assignment is approved only if the Turker also correctly
-identified the ground truth items.
+test set by capturing the screenshots of 352 unique application
+windows. This test set covers three major operating systems (Windows
+XP, Windows Vista, and Mac OS X) and several popular programs such as
+Microsoft Office, Firefox, and Skype. Figure \ref{fig:query_examples}
+shows some examples of the screenshots in the test set. We retrieved
+the top 10 matches for each test screenshot. The correctness of these
+matches were evaluated by workers recruited from Amazon Mechanical
+Turk. For quality control, we inserted into the list of matches one
+known good match (the test image itself), two known bad matches (other
+test images), and two duplicate matches, and shuffled the list. To
+pass the quality test, a worker must correctly identify all the known
+good and bad matches as well as give consistent answers to duplicate
+matches. 
 
-We received X answers. Y of them are approved. The approval rate
-was X.
+Table \ref{} summarizes our findings. Out of 352 screenshots, 194
+(55\%) retrieved at least one and 123 (35\%) retrieved at least three
+good matches among the top 10 matches. Figure \ref{} shows examples of
+screenshots that did not retrieve any good match. They tend to be
+windows less frequently accessed. The articles about them may not have
+been collected and added into our database.  We expect as we continue
+to scale up the database, these percentages will rise.
 
 \begin{figure*}
 \includegraphics[width=2\columnwidth]{figure/query_examples.png}
