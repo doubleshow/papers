@@ -368,8 +368,6 @@ technical information that is both visually and textually relevant
 to, and accessible by, general computer users.
  
 \subsection{Indexing images}
-
-\subsection{Finding similar images}
 Our image search task can be categorized as a content-based image
 retrieval (CBIR) problem; we are given a screenshot of an application
 the user would like information about and the desired result is a
@@ -434,22 +432,9 @@ proximity to the median value.  This process results in what is
 referred to as a Hamming Embedding of the feature vector, which
 requires 8 bytes of memory for each feature (compared to 256 bytes for the floating point vector) and allows for fast
 distance computation by simply taking the Hamming distance between two
-bit-strings belonging to the same cluster.  Given a query image we
-compute the Hamming Embedding for each feature as was performed on the
-database images.  The distance between each query bit-string is
-computed against all database bit-strings in the nearest cluster to
-the query feature vector.  All features within a certain Hamming
-distance cast a vote for their corresponding database image.  This
-look-up process uses an inverted file for each cluster which contains
-lines of bit-strings and their corresponding database image IDs.  The
-result is a histogram of image votes from which we produce a ranked list of
-database images as compared to the query image.
+bit-strings belonging to the same cluster.
 
-The offline database process is implemented using the Hadoop map/reduce \cite{Ghemaqat1327492} implementation to allow the computation to scale with the database size.  The entire feature computation and indexing procedure for our 150,000 image database takes under two hours on a cluster of six High-CPU Amazon EC2 instances.  Image retrieval times for each query image when $k=1,000$, where $k$ is the number of clusters, is .0053 seconds per query feature (approximately 100 features per image) and when $k=10,000$ it is 0.0015 seconds per query feature; however, the latter has fewer image votes due to the decrease in features per cluster as $k$ increases.
-
-
-
-
+The offline database process is implemented using the Hadoop map/reduce \cite{Ghemaqat1327492} implementation to allow the computation to scale with the database size.  The entire feature computation and indexing procedure for our 150,000 image database takes under two hours on a cluster of six High-CPU Amazon EC2 instances.
 \subsection{Extracting Snippets}
 \label{sec:extracting_snippets}
 
@@ -630,6 +615,18 @@ results, they can enter keywords to filter and/or refine the
 results.
 
 \subsection{Finding similar images}
+Given a query image we
+compute the Hamming Embedding for each feature as was performed on the
+database images.  The distance between each query bit-string is
+computed against all database bit-strings in the nearest cluster to
+the query feature vector.  All features within a certain Hamming
+distance cast a vote for their corresponding database image.  This
+look-up process uses an inverted file for each cluster which contains
+lines of bit-strings and their corresponding database image IDs.  The
+result is a histogram of image votes from which we produce a ranked list of
+database images as compared to the query image.
+
+Image retrieval times for each query image when $k=1,000$, where $k$ is the number of clusters, is .0053 seconds per query feature (approximately 100 features per image) and when $k=10,000$ it is 0.0015 seconds per query feature; however, the latter has fewer image votes due to the decrease in features per cluster as $k$ increases.
 
 
 \subsection{Ranking articles}
