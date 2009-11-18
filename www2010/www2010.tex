@@ -90,7 +90,7 @@
 %       \affaddr{Dublin, Ohio 43017-6221}\\
 %       \email{webmaster@marysville-ohio.com}
 \alignauthor Boris Katz\\
-       \affaddr{CSAIL}\\
+       \affaddr{MIT}\\
        \affaddr{Cambridge, MA, USA}\\
        \email{boris@mit.edu}
 }
@@ -107,7 +107,7 @@
   Many online articles contain useful know-how knowledge about GUI
   applications. Even though these articles tend to be richly
   illustrated by screenshots, no system has been designed to take
-  advantage of these screenshots to visually search this resource
+  advantage of these screenshots to visually search know-how articles
   effectively.  In this paper, we present a novel system to index and
   search software know-how articles that leverages the visual
   correspondences between screenshots. To retrieve articles about an
@@ -326,7 +326,7 @@ indexing the images collected by visual features (Section
 articles containing these images (Section
 \ref{sec:extracting_snippets}),
 and classifying articles into categories (Section \ref{sec:classifying_categories}).
-
+\vspace{0.2in}
 \subsection{Collecting images}
 \label{sec:collecting_images}
 
@@ -455,7 +455,7 @@ computation to scale with the database size.  The entire feature
 computation and indexing procedure for our 150,000 image database
 takes under two hours on a cluster of six High-CPU Amazon EC2 \footnote{aws.amazon.com/ec2/}
 instances.
-
+\vspace{0.2in}
 \subsection{Extracting Snippets}
 \label{sec:extracting_snippets}
 
@@ -909,11 +909,11 @@ Site & \textbf{site\_is\_authority} &$\surd$& & $\surd$\\
 %% \subsubsection{Result}
 
 
-\begin{figure}
-\includegraphics[width=\columnwidth]{figure/result_tile.png}
+\begin{figure*}
+\includegraphics[width=2\columnwidth]{figure/result_tile.png}
 \caption{Elements of result presentation}
 \label{fig:result_tile}
-\end{figure}
+\end{figure*}
 
 To display a list of search results, we adopt a presentation scheme 
 modeled after that of a typical search engine in order to 
@@ -1082,7 +1082,9 @@ three systems on a 5 point Likert scale}
 \begin{table*}
   \caption{Number of correct top 10 matches for 15 application windows 
     in five non-English
-    languages: Spanish (S), French (F), German (G), Chinese (C) and Korean (K)}
+    languages: Spanish (S), French (F), German (G), Chinese (C) and
+    Korean (K)}
+\vspace{0.1in}
 \includegraphics[width=2\columnwidth]{figure/bilingual_search.png}
 \label{tbl:bilingual_search}
 \end{table*}
@@ -1119,7 +1121,7 @@ scope when screenshots are dominated by visual features.
 % not necessary to repeat the text embedded in the screenshot, since
 % the visual search will take care of it.
 
-
+\vspace{0.2in}
 \section{Summary}
 
 We described a novel system for indexing and searching know-how
